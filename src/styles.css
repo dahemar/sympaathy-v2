@@ -1,0 +1,5385 @@
+@charset "UTF-8";
+/* jackself.com v3.0 May 2024 */
+
+/* Ensure font-style changes are always immediate */
+* {
+    transition-property: color, opacity, transform, background, width, height, filter, backdrop-filter !important;
+    transition-property: color, opacity, transform, background, width, height, filter, backdrop-filter, box-shadow !important;
+}
+
+/* Efecto de blur general al cargar la página */
+body {
+    filter: blur(15px);
+    animation: page-load-blur 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes page-load-blur {
+    0% {
+        filter: blur(15px);
+        opacity: 0.9;
+    }
+    15% {
+        filter: blur(12px);
+        opacity: 0.92;
+    }
+    30% {
+        filter: blur(8px);
+        opacity: 0.94;
+    }
+    45% {
+        filter: blur(5px);
+        opacity: 0.96;
+    }
+    60% {
+        filter: blur(3px);
+        opacity: 0.98;
+    }
+    75% {
+        filter: blur(1px);
+        opacity: 0.99;
+    }
+    100% {
+        filter: blur(0);
+        opacity: 1;
+    }
+}
+
+body, .v6_3 {
+    background-color: transparent;
+    color: #8A9197;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-y: auto;
+    font-family: 'Headland One', serif;
+    font-weight: 400;
+    text-rendering: optimizeLegibility;
+    line-height: 1.4;
+    animation: text-focus 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    background-color: #000 !important;
+}
+
+html {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 400;
+}
+
+/* Fuentes eliminadas - usar Google Fonts en su lugar */
+
+/* Estilo base para todos los enlaces */
+a {
+    position: relative;
+    text-decoration: none;
+    color: #8A9197;
+    border: none;
+    outline: none;
+    z-index: 1;
+    padding: 0.2em 0.4em;
+    margin: 0 -0.4em;
+    --text-index: 4;
+}
+
+/* Efecto de nube base */
+a::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(251, 252, 255, 0.05);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: -1;
+    filter: blur(8px);
+}
+
+a:hover::before {
+    width: 130%;
+    height: 160%;
+    background: rgba(251, 252, 255, 0.08);
+}
+
+/* Ajustes para los enlaces del menú */
+.menu a {
+    color: #5A5F6B;
+    opacity: 0.85;
+    transition: color 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
+    font-family: 'EB Garamond', serif;
+    font-weight: 500;
+    display: inline-block;
+    min-width: 1.2em;
+    text-align: center;
+}
+
+.menu a:hover {
+    color: #fff;
+    opacity: 1;
+    font-family: 'EB Garamond', serif;
+    font-style: italic !important;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    transition: font-style 0s !important; /* Force immediate font-style change */
+}
+
+.menu a::before {
+    background: rgba(251, 252, 255, 0.05);
+}
+
+.menu a:hover::before {
+    width: 140%;
+    height: 180%;
+    background: rgba(251, 252, 255, 0.08);
+}
+
+/* Ajustes para enlaces en writing-item */
+.writing-item a::before {
+    background: rgba(251, 252, 255, 0.05);
+}
+
+.writing-item a:hover::before {
+    width: 120%;
+    height: 150%;
+    background: rgba(251, 252, 255, 0.07);
+}
+
+/* Ajustes para enlaces en project-item */
+.project-item a::before {
+    background: rgba(251, 252, 255, 0.04);
+}
+
+.project-item a:hover::before {
+    width: 125%;
+    height: 155%;
+    background: rgba(251, 252, 255, 0.06);
+}
+
+/* Ajustes para enlaces en contact-section */
+.contact-section a::before {
+    background: rgba(251, 252, 255, 0.03);
+}
+
+.contact-section a:hover::before {
+    width: 130%;
+    height: 160%;
+    background: rgba(251, 252, 255, 0.05);
+}
+
+/* Ajuste para el menú en modo portrait */
+@media (orientation: portrait) {
+    body {
+        font-size: 4vw;
+    }
+
+    .menu {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        top: auto;
+        width: 100%;
+        padding: 5vw 0;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        box-shadow: 0 -10px 20px rgba(251, 252, 255, 0.1);
+        border: none; /* Eliminar cualquier borde */
+    }
+
+    .menu a {
+        display: inline-block;
+        padding: 2vw 3vw;
+        font-size: 4vw;
+        margin: 0 2vw; /* Aumentado el margen entre elementos */
+        opacity: 0.8;
+        min-width: 15vw; /* Ancho mínimo para mejor distribución */
+        text-align: center; /* Centrar texto */
+    }
+
+    /* Ajustar el efecto de nube para el nuevo espaciado */
+    .menu a::before {
+        filter: blur(15px);
+    }
+
+    .menu a:hover::before {
+        width: 160%;
+        height: 200%;
+    }
+
+    /* Ajustar el contenedor principal para dar más espacio al menú */
+    .container {
+        display: block;
+        margin: 4vw;
+        padding-bottom: 25vw; /* Más espacio para el menú */
+    }
+
+    .project-item, .gallery-item {
+        margin-bottom: 8vw;
+        /* Width will be controlled by the more specific mobile rules below */
+    }
+
+    /* Mejorar la legibilidad del menú activo */
+    .menu a.active {
+        opacity: 1;
+        transform: scale(1.05); /* Ligeramente más grande */
+    }
+
+    /* Ajustar el gradiente para móvil */
+    .menu-gradient {
+        top: -30px;
+        height: 30px;
+        background: linear-gradient(
+            to top,
+            rgba(251, 252, 255, 0.1),
+            rgba(251, 252, 255, 0)
+        );
+    }
+}
+
+body {
+	font-family: 'Headland One', serif;
+	font-weight: 400;
+	text-rendering:optimizeLegibility;
+	line-height: 1.4;
+	}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+/* Releases page layout (inspired by music grid) */
+.releases-page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 3rem 1.75rem 4.5rem;
+}
+
+.releases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 32px;
+    width: 100%;
+    align-items: stretch;
+}
+
+.releases-grid picture {
+    display: block;
+    background: #0b0b0b;
+    border-radius: 0;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+}
+
+.releases-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.97);
+    transition: filter 0.25s ease;
+}
+
+.releases-grid .release-card {
+    position: relative;
+    border: none;
+    background: transparent;
+    border-radius: 0;
+    padding: 0 0 40px;
+    box-shadow: none;
+    transition: filter 0.2s ease;
+    height: auto;
+    display: block;
+}
+
+.releases-grid .release-card:hover {
+    transform: none;
+}
+
+.releases-grid .release-card:hover img {
+    filter: brightness(1.08);
+}
+
+.releases-grid .project-caption {
+    display: block !important;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 6px);
+    padding: 0;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.35;
+    color: #E4E7EC;
+    letter-spacing: 0.01em;
+    background: transparent;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    text-align: left;
+    pointer-events: none;
+}
+
+.slider-placeholder {
+    min-height: 220px;
+    border: 1px dashed rgba(255,255,255,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.5rem;
+    color: #b1b5c1;
+    background: rgba(255,255,255,0.01);
+    border-radius: 8px;
+}
+
+.slider-placeholder strong {
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.releases-grid .release-card:hover .project-caption {
+    opacity: 1;
+}
+
+/* Live captions (match Releases behavior) */
+.live-grid .project-caption {
+    display: block !important;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 6px);
+    padding: 0;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.35;
+    color: #E4E7EC;
+    letter-spacing: 0.01em;
+    background: transparent;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    text-align: left;
+    pointer-events: none;
+}
+
+.live-card:hover .project-caption {
+    opacity: 1;
+}
+
+@media (min-width: 769px) {
+  .releases-grid .project-caption {
+    top: calc(100% - 24px);
+  }
+}
+
+@media (max-width: 768px) {
+  .releases-grid .project-caption {
+    top: calc(100% - 24px);
+    opacity: 0;
+    padding-bottom: 4px;
+    animation: fadeInCaption 0.5s ease-out 0.3s forwards;
+  }
+}
+
+@keyframes fadeInCaption {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Live captions mimic releases while keeping natural rectangles */
+.live-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 32px;
+    width: 100%;
+    align-items: stretch;
+    overflow: visible; /* allow captions to overflow below cards */
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: calc(3rem + 36px) 1.75rem 4.5rem; /* match releases-page + 36px */
+    height: auto;
+}
+
+.live-grid picture {
+    display: block;
+    background: #0b0b0b;
+    border-radius: 0;
+    overflow: hidden;
+    width: 100%;
+}
+
+.live-grid img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.95);
+    transition: filter 0.25s ease;
+}
+
+.live-card {
+    position: relative;
+    border: none;
+    background: transparent;
+    border-radius: 0;
+    padding: 0 0 40px;
+    box-shadow: none;
+    height: auto !important;            /* override .project-link height:100% */
+    overflow: visible !important;       /* ensure caption is not clipped */
+    display: block;
+}
+
+.live-grid .project-link:hover img {
+    opacity: 1 !important; /* neutralize global hover that hides image */
+}
+
+/* Disable default hover pseudo-captions and flashlight for live grid */
+.live-grid .project-link::before,
+.live-grid .project-link::after,
+.live-grid .live-card::before,
+.live-grid .live-card::after {
+    display: none !important;
+    content: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+@media (max-width: 768px) {
+  .live-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 18px;
+    padding: calc(2.25rem + 36px) 40px 3rem; /* match releases-page mobile + 36px */
+  }
+  .live-grid .live-card {
+    padding: 0 0 40px;
+  }
+  .live-grid .project-caption {
+    position: static !important;
+    display: block !important;
+    opacity: 1 !important;
+    margin-top: 8px !important;
+    padding: 0 !important;
+    text-align: left !important;
+  }
+  .live-grid .live-card {
+    position: relative;
+    padding-bottom: 0 !important;
+  }
+  .live-card:hover {
+    transform: none;
+  }
+  .live-card:hover img {
+    filter: brightness(0.97);
+  }
+  .live-card:hover .project-caption {
+    opacity: 1;
+  }
+}
+
+/* Disable default hover pseudo-captions for releases */
+.releases-grid .project-link::before,
+.releases-grid .project-link::after {
+    display: none !important;
+    content: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+.releases-grid .release-card::before,
+.releases-grid .release-card::after {
+    display: none !important;
+    content: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+@media (min-width: 769px) {
+  .releases-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(100vh - 140px);
+  }
+  .releases-grid {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .releases-page {
+    padding: 2.25rem 0 3rem;
+  }
+  .releases-grid picture {
+    aspect-ratio: 1 / 1;
+  }
+  .releases-grid .project-link::before,
+  .releases-grid .project-link::after {
+    display: none !important;
+    content: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  /* Match Live: keep comfortable side gutters on mobile */
+  .releases-page .projects-grid {
+    padding-left: 40px !important;
+    padding-right: 12px !important; /* -28px */
+    box-sizing: border-box !important;
+  }
+}
+
+/* Contact page: allow full-width content (e.g., Instagram embed) */
+.contact-container {
+    max-width: none !important;
+    width: 100% !important;
+    padding: 15vh 10vw 10vw 10vw !important; /* match Bio: top 15vh, left/right 10vw, bottom 10vw */
+    display: block !important; /* override .container grid layout */
+    grid-template-columns: none !important;
+    box-sizing: border-box !important;
+}
+
+.contact-container .writings-grid {
+    display: block !important;
+    width: 100% !important;
+}
+
+.contact-container .writing-category {
+    display: block !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.contact-container .element {
+    display: block !important;
+    width: 100% !important;
+    grid-column: unset !important;
+    box-sizing: border-box !important;
+}
+
+.contact-container .instagram-widget {
+    margin-top: 2rem;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+    width: 100% !important;
+    max-width: none !important;
+    display: block !important;
+    grid-column: unset !important;
+    box-sizing: border-box !important;
+}
+
+.contact-container .instagram-embed {
+    width: 100%;
+    height: 70vh;
+    min-height: 420px;
+    display: block;
+}
+
+.contact-container .instagram-fallback {
+    text-align: left;
+    padding: 1rem 0 0;
+}
+
+@media (max-width: 768px) {
+  .contact-container {
+    padding: 4rem 2rem !important; /* match Bio mobile: similar to line 259 */
+  }
+  .contact-container .instagram-embed {
+    height: 60vh;
+    min-height: 360px;
+  }
+}
+
+.element {
+	margin: 0;
+	padding: 0;
+}
+
+.project-item, .gallery-item, .writing-item {
+	margin-bottom: 4vw;
+}
+
+.project-item img, .gallery-item img {
+	width: 100%;
+	height: auto;
+	transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+	display: block;
+}
+
+.project-item img:hover, .gallery-item img:hover {
+	opacity: 0.92;
+	transform: scale(1.01);
+}
+
+.gallery-caption, .project-item h3, .writing-item h3 {
+	margin-top: 0;
+	margin-bottom: 0;
+	font-family: 'EB Garamond', 'Garamond', serif;
+	position: relative;
+	overflow: hidden;
+}
+
+.gallery-caption p, .project-item p, .writing-item p {
+	margin: 0;
+	opacity: 0.7;
+	font-family: 'Martel', serif;
+}
+
+.writing-category {
+	margin-bottom: 4vw;
+}
+
+.writing-category h2 {
+	margin-bottom: 2vw;
+	font-family: 'EB Garamond', 'Garamond', serif;
+	color: #fff;
+	position: relative;
+	overflow: hidden;
+	filter: blur(0);
+	animation: text-focus 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+	animation-delay: calc(var(--text-index, 3) * 0.2s);
+}
+
+.writing-category h2::after {
+	content: '';
+	position: absolute;
+	bottom: -2px;
+	left: 0;
+	width: 100%;
+	height: 1px;
+	background: linear-gradient(90deg, transparent, currentColor, transparent);
+	opacity: 0.2;
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.writing-category h2:hover::after {
+	transform: scaleX(1);
+}
+
+.menu, .menu-gradient {
+    display: none;
+}
+
+/* Links in text */
+.container a {
+    color: #5A5F6B;
+    transition: all 0.3s ease;
+    display: inline-block;
+    min-width: 1.2em;
+    text-align: center;
+}
+
+.container a:not(.contact-link):hover {
+    color: #fff;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Project and gallery titles */
+.gallery-caption h3, .project-item h3, .writing-item h3 {
+	color: #5A5F6B;
+}
+
+/* Mobile adjustments for Current Works captions and consistent margins */
+@media (max-width: 768px) {
+  /* Caption spacing */
+  .gallery-caption, .project-item h3, .writing-item h3 {
+    margin-top: 2px !important;
+    margin-bottom: 0 !important;
+  }
+  
+  .gallery-caption p, .project-item p, .writing-item p {
+    margin: 2px 0 0 0 !important;
+  }
+  
+  /* Current Works grid layout - force consistent widths */
+  .projects-grid {
+    padding: 0 20px !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* All project links get the same width and margins */
+  .project-link {
+    width: 100% !important;
+    margin: 0 0 16px 0 !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* All project link images get the same dimensions */
+  .project-link img {
+    width: 100% !important;
+    height: auto !important;
+    display: block !important;
+    margin: 0 !important;
+    object-fit: cover !important;
+  }
+  
+  /* Project captions align with images */
+  .project-caption {
+    width: 100% !important;
+    margin: 2px 0 0 0 !important;
+    text-align: left !important;
+  }
+  
+  /* Add bottom margin to pastoral live page */
+  .project-5.project-container {
+    padding-bottom: 40px !important;
+    margin-bottom: 20px !important;
+  }
+}
+
+/* Add bottom margin to pastoral live page on desktop too */
+@media (min-width: 769px) {
+  .project-5.project-container {
+    padding-bottom: 60px !important;
+    margin-bottom: 30px !important;
+  }
+  
+  /* Also target the space-separated version */
+  .project-5 .project-container {
+    padding-bottom: 60px !important;
+    margin-bottom: 30px !important;
+  }
+  
+  /* Add margin to the last element in pastoral live */
+  .project-5 .media-container:last-child {
+    margin-bottom: 60px !important;
+    padding-bottom: 30px !important;
+  }
+  
+  /* Also target the last element.data if it exists */
+  .project-5 .element.data:last-child {
+    margin-bottom: 60px !important;
+    padding-bottom: 30px !important;
+  }
+}
+
+#bouncingImagesLyr0 {
+	display: none;
+	z-index:12 !important;
+}
+
+@media (orientation: landscape) {
+  body {
+        font-size: 1.45vw;
+  }
+
+	.container {
+        margin-left: 15vw;
+    }
+    
+    .menu a {
+        font-size: 1.45vw;
+    }
+
+    .menu {
+        position: fixed;
+        top: 2.5vw;
+        left: 2.5vw;
+        width: auto;
+        padding: 0;
+        background: transparent;
+        z-index: 10;
+        border: none; /* Eliminar cualquier borde */
+    }
+
+    /* Ajustar el gradiente para desktop */
+    .menu-gradient {
+        display: none; /* No necesitamos el gradiente en desktop */
+    }
+}
+
+@media (orientation: portrait) {
+  body {
+        font-size: 4vw;
+    }
+
+    .menu {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        top: auto;
+        width: 100%;
+        padding: 4vw;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-top: none; /* Quitamos la línea */
+        box-shadow: 0 -10px 20px rgba(251, 252, 255, 0.1);
+    }
+
+    .menu a {
+        display: inline-block;
+        padding: 0 4vw 0 0;
+        font-size: 3.5vw;
+  }
+
+		.container {
+        display: block;
+        margin: 4vw;
+        padding-bottom: 20vw; /* Aseguramos que el contenido no quede detrás del menú */
+    }
+
+    .project-item, .gallery-item {
+        margin-bottom: 8vw;
+        /* Width will be controlled by the more specific mobile rules below */
+    }
+    
+    /* Disable menu hover transforms on mobile to prevent movement */
+    .main-nav a:hover span,
+    .main-nav a[href="index.html"]:hover span,
+    .main-nav a[href="bio.html"]:hover span,
+    .main-nav a[href="contact.html"]:hover span {
+        transform: none !important;
+        transition: none !important;
+    }
+    
+    /* Ensure menu items don't move on mobile */
+    .main-nav a {
+        transform: none !important;
+        transition: color 0.3s ease !important;
+    }
+    
+    .main-nav a:hover {
+        transform: none !important;
+    }
+}
+
+.contact-section {
+    margin: 4vw;
+    max-width: 800px;
+}
+
+.contact-info {
+    margin-top: 2em;
+}
+
+/* (removed empty .contact-item ruleset) */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Averia Sans Libre', cursive;
+    font-weight: 700;
+    margin: 0;
+    filter: blur(0);
+    animation: text-focus 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: calc(var(--text-index, 0) * 0.2s);
+}
+
+.scramble {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(5px);
+    filter: blur(0);
+    position: relative;
+    display: inline-block;
+    min-height: 1.2em;
+    line-height: 1.2;
+}
+
+.scramble.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    filter: blur(0);
+    animation: text-focus 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: calc(var(--text-index, 6) * 0.2s);
+    position: relative;
+    display: inline-block;
+    min-height: 1.2em;
+    line-height: 1.2;
+}
+
+@keyframes glitch {
+    0% {
+        transform: translate(0) skew(0deg) rotate(0deg) scale(1);
+        filter: blur(0);
+        opacity: 1;
+    }
+    10% {
+        transform: translate(-2px, 2px) skew(-3deg, 2deg) rotate(-1deg) scale(1.02);
+        filter: blur(1px);
+        opacity: 0.9;
+    }
+    20% {
+        transform: translate(3px, -1px) skew(2deg, -3deg) rotate(2deg) scale(0.98);
+        filter: blur(2px);
+        opacity: 0.8;
+    }
+    30% {
+        transform: translate(-4px, 3px) skew(-5deg, 3deg) rotate(-2deg) scale(1.03);
+        filter: blur(1.5px);
+        opacity: 1;
+    }
+    40% {
+        transform: translate(2px, -3px) skew(3deg, -5deg) rotate(1deg) scale(0.99);
+        filter: blur(2.5px);
+        opacity: 0.85;
+    }
+    50% {
+        transform: translate(5px, -5px) skew(-6deg, 2deg) rotate(-3deg) scale(1.05);
+        filter: blur(3px);
+        opacity: 0.7;
+    }
+    60% {
+        transform: translate(-3px, 2px) skew(2deg, -2deg) rotate(3deg) scale(0.97);
+        filter: blur(1px);
+        opacity: 1;
+    }
+    70% {
+        transform: translate(3px, -1px) skew(-3deg, 3deg) rotate(-1deg) scale(1);
+        filter: blur(2px);
+        opacity: 0.9;
+    }
+    80% {
+        transform: translate(-1px, 1px) skew(4deg, -2deg) rotate(2deg) scale(1.02);
+        filter: blur(1.5px);
+        opacity: 1;
+    }
+    90% {
+        transform: translate(2px, -2px) skew(-2deg, 4deg) rotate(-1deg) scale(0.98);
+        filter: blur(2px);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(0) skew(0deg) rotate(0deg) scale(1);
+        filter: blur(0);
+        opacity: 1;
+    }
+}
+
+.glitching {
+    animation: glitch 0.5s ease-in-out infinite;
+    opacity: 0.97;
+    display: inline-block;
+}
+
+/* Asegurar que el texto debajo de elementos con scramble mantenga su posición */
+.scramble + *,
+.scramble ~ * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Contenedor para elementos con scramble para mantener layout estable */
+.scramble-container {
+    position: relative;
+    min-height: 1.2em;
+    line-height: 1.2;
+}
+
+/* =============================================
+   Unificar Proyectos 2, 4, 6 con estilo de Bio
+   (tipografías y espaciados coherentes)
+   ============================================= */
+
+/* Desktop: columnas de texto con padding y ancho como Bio */
+.project-2 .v5_57,
+.project-4 .v5_57,
+.project-6 .v5_57 {
+    padding: 4rem 2rem !important;
+    max-width: 800px !important;
+}
+
+/* Títulos y párrafos con las mismas proporciones que Bio */
+/* (removed duplicate per-project typography overrides; unified at end of file) */
+
+.project-2 .project-text p,
+.project-4 .project-text p,
+.project-6 .project-text p {
+    margin-bottom: 1.5rem !important;
+}
+
+/* Mobile: mismo criterio de padding y ancho que Bio */
+@media (max-width: 768px) {
+  .project-2 .v1_6,
+  .project-4 .v1_6,
+  .project-6 .v1_6 {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    height: auto !important;
+  }
+
+  .project-2 .v5_57,
+  .project-4 .v5_57,
+  .project-6 .v5_57 {
+    width: 100% !important;
+    max-width: 800px !important;
+    box-sizing: border-box !important;
+    padding: 4rem 2rem 2rem 2rem !important;
+    margin: 0 auto !important;
+    align-items: flex-start !important;
+  }
+
+  .project-2 .v5_59,
+  .project-4 .v5_59,
+  .project-6 .v5_59 {
+    display: none !important; /* mantener foco en texto como en Bio */
+  }
+
+  /* (removed duplicate per-project mobile overrides; unified at end of file) */
+}
+
+/* Desktop: igualar posición y ancho de texto con Bio */
+.project-2 .v1_6,
+.project-4 .v1_6,
+.project-6 .v1_6 {
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+  margin-top: 0 !important;
+}
+
+.project-2 .v5_57,
+.project-4 .v5_57,
+.project-6 .v5_57 {
+  width: 100% !important;
+  max-width: 800px !important;          /* igual que Bio */
+  margin: 0 auto !important;            /* igual que Bio */
+  padding: 4rem 2rem !important;        /* igual que Bio */
+  box-sizing: border-box !important;
+}
+
+/* Ocultar media-columna para replicar layout de Bio (solo texto) */
+.project-2 .v5_59,
+.project-4 .v5_59,
+.project-6 .v5_59 {
+  display: none !important;
+}
+
+/* Tipografía idéntica a Bio */
+/* (removed duplicate per-project desktop overrides; unified at end of file) */
+
+/* Restaurar columna de imagen en desktop y alinear texto como Bio */
+.project-2 .v1_6,
+.project-4 .v1_6,
+.project-6 .v1_6 {
+  position: relative !important;
+}
+
+.project-2 .v5_57,
+.project-4 .v5_57,
+.project-6 .v5_57 {
+  width: auto !important;
+  max-width: 800px !important;
+  margin-left: calc((100vw - 800px) / 2) !important; /* igual que Bio */
+  margin-right: 0 !important;
+  padding: 4rem 2rem !important; /* igual que Bio */
+  z-index: 1;
+}
+
+@media (min-width: 769px) {
+  .project-2 .v5_59,
+  .project-4 .v5_59,
+  .project-6 .v5_59 {
+    display: flex !important; /* visible en desktop */
+    position: absolute !important;
+    left: 50% !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    z-index: 0;
+  }
+}
+
+/* (removed duplicate body text sizing; unified at end of file) */
+
+/* Ajuste definitivo de posición y tipografía en desktop para igualar Bio */
+@media (min-width: 769px) {
+  .project-2 .v1_6,
+  .project-4 .v1_6,
+  .project-6 .v1_6 {
+    margin-top: 0 !important;
+    position: relative !important;
+  }
+
+  .project-2 .v5_57,
+  .project-4 .v5_57,
+  .project-6 .v5_57 {
+    width: 800px !important;            /* exacto como Bio */
+    max-width: 800px !important;
+    margin-left: 15vw !important;       /* mismo desplazamiento que Bio */
+    margin-right: 0 !important;
+    padding: 4rem 2rem !important;      /* igual que Bio */
+    box-sizing: border-box !important;
+  }
+
+  /* Mismo tamaño de texto que Bio para párrafos dentro del bloque */
+  /* (removed duplicate paragraph/link sizing; unified at end of file) */
+}
+
+/* Links ligeramente más pequeños que el texto del cuerpo */
+@media (min-width: 769px) {
+  .element.data p a,
+  .project-text a {
+    font-size: 0.9em !important;
+  }
+}
+
+/* Replicar márgenes de Bio para projects en desktop (landscape) */
+@media (orientation: landscape) {
+  .project-2 .v5_57,
+  .project-4 .v5_57,
+  .project-6 .v5_57 {
+    margin-left: 15vw !important;  /* como .container en Bio */
+    margin-right: 0 !important;
+  }
+}
+
+/* Replicar márgenes de Bio para projects en móvil (portrait) */
+@media (orientation: portrait) {
+  .project-2 .v5_57,
+  .project-4 .v5_57,
+  .project-6 .v5_57 {
+    margin: 4vw !important;        /* como .container en Bio */
+    padding: 0 !important;         /* Bio usa margen, no padding lateral */
+    max-width: none !important;
+  }
+  /* ocultar imagen en móvil */
+  .project-2 .v5_59,
+  .project-4 .v5_59,
+  .project-6 .v5_59 {
+    display: none !important;
+  }
+}
+
+.glitch-text {
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+    background: black;
+    display: inline-block;
+    animation: glitch 0.2s infinite alternate ease-in-out;
+}
+
+/* Refinamiento de la galería principal */
+.gallery-composition {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    padding: 12vh 0 0 0; /* Solo padding arriba para el header */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1vw;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+/* Ajuste de los items para llenar el espacio */
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+/* Distribución específica para llenar la pantalla */
+.gallery-item.pos-1 {
+    grid-column: 1;
+    grid-row: 1 / span 2; /* Ocupa toda la altura izquierda */
+}
+
+.gallery-item.pos-2 {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.gallery-item.pos-3 {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.gallery-item.pos-4 {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.gallery-item.pos-5 {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+.gallery-item.pos-6 {
+    display: none; /* Ocultamos la sexta imagen para mantener la composición limpia */
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Ajustes responsive */
+@media (orientation: portrait) {
+    .gallery-composition {
+        height: auto;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(5, 60vh);
+        padding: 10vh 0 0 0;
+        gap: 1vh;
+    }
+
+    .gallery-item.pos-1,
+    .gallery-item.pos-2,
+    .gallery-item.pos-3,
+    .gallery-item.pos-4,
+    .gallery-item.pos-5 {
+        grid-column: 1;
+        grid-row: auto;
+    }
+}
+
+/* Estilos para la página de detalle del proyecto */
+.project-detail {
+    display: flex;
+    justify-content: center;
+    padding: 120px 0 40px 0;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: auto;
+    height: auto;
+}
+
+.project-left {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
+.project-left h2 {
+    margin: 0;
+    font-size: 2.5em;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    color: #fff;
+    flex: 0 0 auto;
+}
+
+.project-image {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Rectangular images for specific projects */
+.project-2 .project-image,
+.project-4 .project-image,
+.project-6 .project-image {
+    width: 100%;
+    height: 80%;
+    object-fit: cover;
+    margin: 0 auto;
+    display: block;
+}
+
+@media (orientation: portrait) {
+    .v1_6 {
+        max-width: 100%;
+    }
+
+    .v5_59 {
+        width: 100%;
+        height: 50vh;
+        padding: 0;
+}
+
+.project-image {
+        position: relative;
+        height: 100%;
+    }
+
+    /* Adjust rectangular images for mobile */
+    .project-2 .project-image,
+    .project-4 .project-image,
+    .project-6 .project-image {
+    height: 100%;
+        top: 0;
+    }
+}
+
+/* Eliminar estilos conflictivos */
+.project-right,
+.project-description,
+.project-header,
+.project-info,
+.project-metadata,
+.project-links,
+.description-text {
+    display: none;
+}
+
+/* Ajustes responsive */
+@media (orientation: portrait) {
+    .project-detail {
+        padding: 100px 0 20px 0;
+    }
+
+    .project-left {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 0 20px;
+    }
+
+    .project-left h2 {
+        font-size: 2em;
+    }
+
+    .project-image {
+        width: 100%;
+        max-width: 400px;
+    }
+}
+
+/* Estilos específicos para la página About */
+.about-container {
+    padding: 5vw;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.element {
+    margin-bottom: 4vw;
+    font-size: 1.2vw;
+    line-height: 1.6;
+}
+
+.element p {
+    margin-bottom: 1.5em;
+    font-size: 0.8em;
+    line-height: 1.6;
+    filter: blur(0);
+    animation: text-focus 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: calc(var(--text-index, 5) * 0.2s);
+}
+
+@media (orientation: portrait) {
+    .element {
+        font-size: 0.9em;
+    }
+    .element p {
+        font-size: 0.9em;
+    }
+}
+
+/* Estilos para la navegación */
+.main-nav {
+    background-color: #000000 !important;
+    color: #8A9197 !important;
+    padding: 20px 40px !important;
+    position: fixed !important;
+    width: calc(100% - 80px) !important;
+    top: 0 !important;
+    z-index: 9999 !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    font-family: 'EB Garamond', serif !important;
+    font-weight: 500 !important;
+    border-bottom: 1px solid rgba(138, 145, 151, 0.6);
+}
+
+.main-nav-right {
+    /* Use grid so item positions are fixed relative to the page (no shifts on italic) */
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 90px 55px 45px 85px; /* releases, live, bio, contact */
+    column-gap: 44px;
+    justify-content: end;
+    align-items: center;
+}
+
+.main-nav-left {
+    display: none;
+}
+
+.main-nav a {
+    color: #8A9197;
+    text-decoration: none;
+    position: relative;
+    padding: 0.2em 0;
+    margin: 0;
+    display: inline-block;
+    text-align: center;
+    /* Fixed widths to prevent layout shift on italic hover */
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    font-family: 'EB Garamond', serif;
+    font-weight: 500;
+    font-style: normal;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    white-space: nowrap;
+    filter: blur(0);
+    animation: text-focus 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards,
+               menu-wave 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: calc(var(--menu-index) * 0.3s);
+}
+
+/* Efecto de texto superpuesto */
+.main-nav a::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5em;
+    color: rgba(251, 252, 255, 0.1);
+    white-space: nowrap;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: -1;
+    animation: font-switch 2s infinite;
+    filter: blur(16px) !important;
+    opacity: 0.25 !important;
+}
+
+@keyframes font-switch {
+    0%, 45% {
+        font-family: 'Astloch', serif;
+        filter: blur(0);
+        opacity: 1;
+    }
+    48%, 52% {
+        filter: blur(2px);
+        opacity: 0.5;
+    }
+    55%, 95% {
+        font-family: 'Headland One', serif;
+        filter: blur(0);
+        opacity: 1;
+    }
+    98%, 100% {
+        filter: blur(2px);
+        opacity: 0.5;
+    }
+}
+
+.main-nav a:hover {
+    color: #fff;
+    font-style: italic;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Prevent layout shift when menu becomes italic on mobile */
+@media (max-width: 768px) {
+  .main-nav-right {
+    justify-content: center;
+    grid-template-columns: 75px 45px 38px 70px; /* tighter mobile widths */
+    column-gap: 18px;
+  }
+  .main-nav-right a {
+    text-align: center;
+  }
+}
+
+/* (removed empty .desktop-nav-stable ruleset) */
+@media (min-width: 769px) {
+  .main-nav {
+    height: auto !important;
+  }
+  .main-nav-right {
+    /* Keep grid on desktop; do not override with flex gap */
+    display: grid !important;
+    grid-auto-flow: column !important;
+    grid-template-columns: 90px 55px 45px 85px !important;
+    column-gap: 44px !important;
+  }
+  .main-nav a {
+    font-size: 1.32rem !important;
+    line-height: 1.32 !important;
+    white-space: nowrap !important;
+  }
+}
+
+.main-nav a:hover::after {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+    filter: blur(24px) !important;
+    opacity: 0.18 !important;
+}
+
+/* Ajuste para el enlace "current works" */
+.main-nav a[href="index.html"] {
+    min-width: 160px;
+    --menu-index: 1;
+}
+
+.main-nav a[href="index.html"]::after {
+    content: "current works";
+}
+
+/* Ajuste para el enlace "bio" */
+.main-nav a[href="bio.html"] {
+    --menu-index: 2;
+}
+
+.main-nav a[href="bio.html"]::after {
+    content: "bio";
+}
+
+/* Ajuste para el enlace "contact" */
+.main-nav a[href="contact.html"] {
+    --menu-index: 3;
+}
+
+.main-nav a[href="contact.html"]::after {
+    content: "contact";
+}
+
+/* Ajuste para el enlace scramble */
+.main-nav a[href="scramble.html"] {
+    --menu-index: 0;
+}
+
+.main-nav a[href="scramble.html"]::after {
+    content: "scramble";
+}
+
+/* Efecto de nube para la navegación */
+.main-nav a::before {
+    content: '';
+    position: absolute;
+    bottom: 6px;
+    left: 20%;
+    width: 60%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.main-nav a:hover {
+    color: #f8f9fb;
+    font-style: italic;
+    transform: none;
+    backface-visibility: hidden;
+}
+
+.main-nav a:hover::before {
+    opacity: 1;
+}
+
+/* Grid para las imágenes */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 40px;
+    padding: 100px 60px 60px 60px;
+    height: calc(100vh - 160px);
+    width: calc(100% - 120px);
+    overflow: hidden; /* Asegura que no haya scroll dentro del grid */
+}
+
+/* Live page uses `.projects-grid live-grid` — override the base `.projects-grid` block */
+.projects-grid.live-grid {
+    /* Layout + spacing should follow Releases-like grid, not the 3x2 fixed viewport grid */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-rows: none;
+    gap: 23px; /* match previous desktop spacing */
+
+    width: 100%;
+    max-width: none;
+    margin: 64px auto 0; /* +36px + 28px */
+    padding: calc(3rem + 36px) 51px 4.5rem; /* match previous desktop side margins */
+    box-sizing: border-box;
+
+    height: auto;
+    overflow: visible;
+}
+
+/* Live grid items should keep natural rectangles (not forced absolute-fill cropping) */
+.projects-grid.live-grid .project-link {
+    height: auto;
+    overflow: visible;
+}
+
+/* Live grid: enforce consistent landscape thumbnails (as before) */
+.projects-grid.live-grid picture {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #0b0b0b;
+}
+
+.projects-grid.live-grid picture img,
+.projects-grid.live-grid picture .hover-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Estilos móviles para la galería */
+@media (max-width: 768px) {
+    .projects-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 32px !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        margin-top: 48px !important;
+        padding: 24px 0 64px 0 !important;
+        box-sizing: border-box !important;
+        align-items: center !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    /* Live: match Releases mobile top spacing and side margins */
+    .projects-grid.live-grid {
+        margin-top: 108px !important; /* 48px + 36px + 24px */
+        padding-left: 32px !important;
+        padding-right: 32px !important;
+        padding-top: 0 !important; /* margin-top drives the top spacing */
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: visible !important;
+        height: auto !important;
+        align-items: stretch !important;
+    }
+
+    .projects-grid.live-grid .project-link {
+        width: 100% !important;
+        max-width: none !important;
+        align-items: stretch !important;
+    }
+    
+    .projects-grid.live-grid .project-link img,
+    .projects-grid.live-grid .project-link .hover-video {
+        position: static !important;
+        height: auto !important;
+        display: block !important;
+        object-fit: cover !important;
+    }
+    
+    .project-link {
+        position: static !important;
+        width: 92vw !important;
+        max-width: 420px !important;
+        height: auto !important;
+        overflow: visible !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        background: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        transition: none !important;
+    }
+    
+    .project-link img {
+        width: 100% !important;
+        height: auto !important;
+        object-fit: cover !important;
+        position: static !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        transition: none !important;
+        filter: none !important;
+        margin-bottom: 12px !important;
+    }
+    
+    /* Disable hover overlays entirely on mobile */
+    .project-link::before,
+    .project-link::after,
+    .project-live::before,
+    .project-live::after,
+    .project-ep::before,
+    .project-ep::after,
+    .project-licitir::before,
+    .project-licitir::after,
+    .project-licitir-ep::before,
+    .project-licitir-ep::after,
+    .project-pastoral::before,
+    .project-pastoral::after,
+    .project-pastoral-ep::before,
+    .project-pastoral-ep::after {
+        display: none !important;
+        content: none !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+
+    /* Neutralize hover effects on mobile */
+    .project-link:hover img,
+    .project-link:hover .hover-video {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+    }
+    
+    /* Disable all hover states on mobile */
+    .project-link:hover::before,
+    .project-link:hover::after,
+    .project-live:hover::before,
+    .project-live:hover::after,
+    .project-ep:hover::before,
+    .project-ep:hover::after,
+    .project-licitir:hover::before,
+    .project-licitir:hover::after,
+    .project-licitir-ep:hover::before,
+    .project-licitir-ep:hover::after,
+    .project-pastoral:hover::before,
+    .project-pastoral:hover::after,
+    .project-pastoral-ep:hover::before,
+    .project-pastoral-ep:hover::after {
+        display: none !important;
+        content: none !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+}
+
+.project-link {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.project-link img,
+.project-link .hover-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 0.3s ease;
+}
+
+.hover-video {
+    opacity: 0;
+    z-index: 1;
+}
+
+/* Estilos específicos para el proyecto live */
+.project-live::after {
+    content: 'diamantista live';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    transform: none;
+    color: #fff;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: clamp(0.9em, 2vw, 1.1em);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 3;
+    pointer-events: none;
+    text-align: left;
+    width: auto;
+}
+
+.project-live:hover::after {
+    opacity: 1;
+    animation: scramble-text 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-live:hover::before {
+    animation: font-switch 2s infinite;
+}
+
+/* Estilos específicos para el proyecto ep */
+.project-ep::after {
+    content: 'diamantista - LOVE IS VITAL';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    transform: none;
+    color: #fff;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: clamp(0.9em, 2vw, 1.1em);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 3;
+    pointer-events: none;
+    text-align: left;
+}
+
+.project-ep:hover::after {
+    opacity: 1;
+    animation: scramble-text 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-ep:hover::before {
+    animation: font-switch 2s infinite;
+}
+
+/* Efectos de hover comunes */
+.project-link:hover .hover-video {
+    opacity: 1;
+}
+
+.project-link:hover img {
+    opacity: 0;
+}
+
+/* Posición específica para cada imagen */
+.project-link:nth-child(1) img {
+    object-position: center;
+}
+
+.project-link:nth-child(3) img {
+    object-position: center 20%;
+}
+
+.project-link:nth-child(5) img {
+    object-position: center 20%;
+}
+
+.project-link img.loaded {
+    filter: blur(0) brightness(1);
+}
+
+/* Efecto de linterna al hover */
+.project-link::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle at center, rgba(251, 252, 255, 0.3) 0%, rgba(251, 252, 255, 0) 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1;
+    filter: blur(8px);
+    opacity: 0;
+}
+
+.project-link:hover::before {
+    width: 200%;
+    height: 200%;
+    opacity: 1;
+    animation: flashlight 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.project-link:hover img {
+    filter: brightness(1.2);
+}
+
+@keyframes flashlight {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Efecto de iluminación para proyectos pares (2, 4, 6) */
+.project-link:nth-child(even) img.loaded {
+    animation: illuminate-even 3.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Efecto de iluminación para proyectos impares (1, 3, 5) */
+.project-link:nth-child(odd) img.loaded {
+    animation: illuminate-odd 3.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes illuminate-even {
+    0% {
+        filter: brightness(1);
+        box-shadow: 0 0 0 rgba(251, 252, 255, 0);
+    }
+    15% {
+        filter: brightness(1.3);
+        box-shadow: 0 0 40px rgba(251, 252, 255, 0.4);
+    }
+    30% {
+        filter: brightness(1.1);
+        box-shadow: 0 0 30px rgba(251, 252, 255, 0.3);
+    }
+    45% {
+        filter: brightness(1.2);
+        box-shadow: 0 0 35px rgba(251, 252, 255, 0.35);
+    }
+    60% {
+        filter: brightness(1.05);
+        box-shadow: 0 0 20px rgba(251, 252, 255, 0.2);
+    }
+    75% {
+        filter: brightness(1.1);
+        box-shadow: 0 0 25px rgba(251, 252, 255, 0.25);
+    }
+    90% {
+        filter: brightness(1.02);
+        box-shadow: 0 0 15px rgba(251, 252, 255, 0.15);
+    }
+    100% {
+        filter: brightness(1);
+        box-shadow: 0 0 0 rgba(251, 252, 255, 0);
+    }
+}
+
+@keyframes illuminate-odd {
+    0% {
+        filter: brightness(1);
+        box-shadow: 0 0 0 rgba(251, 252, 255, 0);
+    }
+    30% {
+        filter: brightness(1.3);
+        box-shadow: 0 0 40px rgba(251, 252, 255, 0.4);
+    }
+    45% {
+        filter: brightness(1.1);
+        box-shadow: 0 0 30px rgba(251, 252, 255, 0.3);
+    }
+    60% {
+        filter: brightness(1.2);
+        box-shadow: 0 0 35px rgba(251, 252, 255, 0.35);
+    }
+    75% {
+        filter: brightness(1.05);
+        box-shadow: 0 0 20px rgba(251, 252, 255, 0.2);
+    }
+    90% {
+        filter: brightness(1.1);
+        box-shadow: 0 0 25px rgba(251, 252, 255, 0.25);
+    }
+    95% {
+        filter: brightness(1.02);
+        box-shadow: 0 0 15px rgba(251, 252, 255, 0.15);
+    }
+    100% {
+        filter: brightness(1);
+        box-shadow: 0 0 0 rgba(251, 252, 255, 0);
+    }
+}
+
+/* Refinamiento de la galería principal */
+.gallery-composition {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    padding: 15vh 4vw 4vw; /* Añadido espacio arriba para el header */
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+    gap: 2vw;
+    background: #fff;
+}
+
+/* Estilos base para los items de la galería */
+.gallery-item {
+    position: absolute;
+    width: 405px;
+    overflow: hidden;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    filter: blur(20px) brightness(0.8);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scale(1.1);
+}
+
+.gallery-item img.loaded {
+    filter: blur(0) brightness(1);
+    transform: scale(1);
+}
+
+/* Posiciones específicas para cada item */
+.item-1 {
+    top: 102px;
+    left: 120px;
+    height: 259px;
+}
+
+.item-2 {
+    top: 387px;
+    left: 120px;
+    height: 318px;
+}
+
+.item-3 {
+    top: 672px;
+    left: 553px;
+    height: 310px;
+}
+
+.item-4 {
+    top: 731px;
+    left: 120px;
+    height: 249px;
+}
+
+.item-5 {
+    top: 387px;
+    left: 987px;
+    height: 318px;
+}
+
+.item-6 {
+    top: 102px;
+    left: 553px;
+    height: 544px;
+}
+
+.item-7 {
+    top: 102px;
+    left: 987px;
+    height: 259px;
+}
+
+.item-8 {
+    top: 731px;
+    left: 987px;
+    height: 251px;
+}
+
+/* Hover suave en las imágenes */
+.gallery-item img {
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.gallery-item:hover img {
+    transform: scale(1.02);
+}
+
+/* Ajustes responsive */
+@media (orientation: portrait) {
+    .gallery-composition {
+        padding-top: 12vh; /* Ajustado para móviles */
+    }
+
+    .main-nav {
+        padding: 4vw;
+    }
+}
+
+/* Refinamiento de las páginas de detalle */
+.project-detail {
+    padding: 15vh 10vw 10vw;
+    max-width: none;
+}
+
+.project-header {
+    margin-bottom: 8vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4vw;
+}
+
+.project-title {
+    font-size: 2.5vw;
+    margin-bottom: 2vw;
+    grid-column: 1 / -1;
+}
+
+.project-description {
+    font-size: 1.1vw;
+    line-height: 1.8;
+    opacity: 0.85;
+}
+
+.project-images {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2vw;
+    margin-top: 6vw;
+}
+
+.project-image {
+    grid-column: span 6;
+    opacity: 0.95;
+    transition: opacity 0.4s ease;
+}
+
+.project-image:hover {
+    opacity: 1;
+}
+
+/* Refinamiento de la página About */
+.container {
+    margin: 15vh auto 10vw;
+    padding: 0 calc(10vw - 18px);
+    max-width: 1800px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 4vw;
+}
+
+.element {
+    grid-column: span 6;
+    font-size: 1.1vw;
+    line-height: 1.8;
+    opacity: 0.85;
+}
+
+.element p {
+    margin-bottom: 2em;
+    filter: blur(0);
+    animation: text-focus 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: calc(var(--text-index, 5) * 0.2s);
+}
+
+@media (orientation: portrait) {
+    .element {
+        font-size: 0.9em;
+    }
+    .element p {
+        font-size: 0.9em;
+    }
+}
+
+/* Refinamiento de la página Writings */
+.writings-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 4vw;
+}
+
+.writing-category {
+    grid-column: span 6;
+}
+
+.writing-category h2 {
+    font-size: 1.8vw;
+    margin-bottom: 3vw;
+    opacity: 0.9;
+}
+
+.writing-item {
+    margin-bottom: 4vw;
+    opacity: 0.85;
+    transition: opacity 0.4s ease;
+}
+
+.writing-item:hover {
+    opacity: 1;
+}
+
+.writing-item h3 {
+    margin-top: 1em;
+    margin-bottom: 0.3em;
+    font-family: 'EB Garamond', 'Garamond', serif;
+    position: relative;
+    overflow: hidden;
+    color: #5A5F6B;
+    filter: blur(0);
+    animation: text-focus 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: calc(var(--text-index, 2) * 0.2s);
+}
+
+.writing-item p {
+    margin: 0;
+    opacity: 0.7;
+    font-family: 'Martel', serif;
+    line-height: 1.6;
+    margin-bottom: 1em;
+    filter: blur(0);
+    animation: text-focus 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: calc(var(--text-index, 3) * 0.2s);
+}
+
+.writing-item a.read-more {
+    color: #5A5F6B;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 1em;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    padding: 0.2em 0.4em;
+    margin: 1em -0.4em 0;
+    min-width: 1.2em;
+    text-align: center;
+}
+
+.writing-item a.read-more:hover {
+    color: #fff;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Restaurar efecto de nube */
+.writing-item a.read-more::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(213, 74, 58, 0.05);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: -1;
+    filter: blur(8px);
+}
+
+.writing-item a.read-more:hover::before {
+    width: 120%;
+    height: 150%;
+    background: rgba(213, 74, 58, 0.07);
+}
+
+/* Ajustes responsive más elegantes */
+@media (orientation: portrait) {
+    .main-nav {
+        padding: 6vw 4vw;
+    }
+
+    .project-header {
+        grid-template-columns: 1fr;
+    }
+
+    .project-title {
+        font-size: 8vw;
+    }
+
+    .project-description {
+        font-size: 4vw;
+	}
+
+	.element {
+        grid-column: span 12;
+        font-size: 4vw;
+    }
+
+    .writings-grid {
+        gap: 8vw;
+    }
+
+    .writing-category {
+        grid-column: span 12;
+    }
+
+    .writing-category h2 {
+        font-size: 6vw;
+    }
+}
+
+/* Refinamiento del efecto scramble */
+.scramble {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+}
+
+.scramble.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.glitching {
+    opacity: 0.95;
+    display: inline-block;
+    mix-blend-mode: difference;
+}
+
+/* Nueva disposición de la galería */
+.gallery-grid {
+    width: 100%;
+    padding-top: 80px; /* Espacio para el nav */
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: #fff;
+}
+
+.gallery-item {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    transition: transform 0.6s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.02);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        padding-top: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Contenedor principal */
+.gallery-container {
+    width: 100%;
+    height: 982px;
+    background: rgba(255,255,255,1);
+    position: relative;
+    overflow: hidden;
+}
+
+.v6_3 {
+    width: 100%;
+    height: 982px;
+    background-color: black;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Estilos para las imágenes */
+.v6_13, .v6_14, .v6_15, .v6_16, .v6_17, .v6_18, .v6_19, .v6_20 {
+    width: 405px;
+    position: absolute;
+    overflow: hidden;
+    display: block;
+    mix-blend-mode: normal;
+}
+
+.v6_13 {
+    height: 259px;
+    top: 102px;
+    left: 120px;
+}
+
+.v6_14 {
+    height: 318px;
+    top: 387px;
+    left: 120px;
+}
+
+.v6_18 {
+    height: 544px;
+    top: 102px;
+    left: 553px;
+}
+
+.v6_19 {
+    height: 259px;
+    top: 102px;
+    left: 987px;
+}
+
+.v6_17 {
+    height: 318px;
+    top: 387px;
+    left: 987px;
+}
+
+.v6_16 {
+    height: 249px;
+    top: 731px;
+    left: 120px;
+}
+
+.v6_15 {
+    height: 310px;
+    top: 672px;
+    left: 553px;
+}
+
+.v6_20 {
+    height: 251px;
+    top: 731px;
+    left: 987px;
+}
+
+/* Estilos para las imágenes dentro de los contenedores */
+.v6_13 img, .v6_14 img, .v6_15 img, .v6_16 img, 
+.v6_17 img, .v6_18 img, .v6_19 img, .v6_20 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Estilos para la página de detalle */
+.v6_58 {
+    width: 100%;
+    height: 982px;
+    background: rgba(255,255,255,1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Estilos para la información del proyecto */
+.project-info {
+    width: auto;
+    position: absolute;
+    top: 102px;
+    left: 120px;
+    opacity: 1;
+    text-align: left;
+}
+
+.project-title {
+    font-family: 'EB Garamond', 'Garamond', serif;
+    font-size: 2.5vw;
+    margin-bottom: 2vw;
+    color: #5A5F6B;
+}
+
+.project-metadata {
+    font-family: 'Biryani', sans-serif;
+    font-size: 1.1vw;
+    line-height: 1.8;
+    opacity: 0.85;
+    margin-bottom: 3vw;
+    filter: blur(0);
+    animation: text-focus 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: calc(var(--text-index, 1) * 0.2s);
+}
+
+.project-links {
+    margin-top: 2vw;
+}
+
+.project-links a {
+    display: block;
+    font-family: 'Biryani', sans-serif;
+    font-size: 1.1vw;
+    color: #fff;
+    margin-bottom: 1em;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    min-width: 1.2em;
+    text-align: center;
+    filter: blur(0);
+    animation: text-focus 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: calc(var(--text-index, 4) * 0.2s);
+}
+
+.project-links a:hover {
+    opacity: 1;
+    transform: translateX(5px);
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Estilos para la imagen del proyecto */
+.project-image {
+    width: 609px;
+    height: 611px;
+    position: absolute;
+    top: 369px;
+    left: 783px;
+    overflow: hidden;
+    transition: opacity 0.4s ease;
+}
+
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    filter: blur(20px) brightness(0.8);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scale(1.1);
+}
+
+.project-image img.loaded {
+    filter: blur(0) brightness(1);
+    transform: scale(1);
+}
+
+.project-image:hover img {
+    transform: scale(1.02);
+}
+
+/* Estilos para la descripción del proyecto */
+.project-description {
+    width: 609px;
+    position: absolute;
+    top: 102px;
+    left: 783px;
+    font-family: 'Biryani', sans-serif;
+    font-size: 1.1vw;
+    line-height: 1.8;
+    opacity: 0.85;
+}
+
+.description-text {
+    margin-bottom: 2em;
+}
+
+/* Animaciones y efectos */
+.scramble {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(5px);
+}
+
+.scramble.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity 1s ease, visibility 1s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Ajustes responsive */
+@media (orientation: portrait) {
+    .project-title {
+        font-size: 8vw;
+    }
+
+    .project-metadata,
+    .project-links a,
+    .project-description {
+        font-size: 4vw;
+    }
+
+    .project-image {
+        position: relative;
+        width: 100%;
+        height: auto;
+        margin: 4vw 0;
+        left: 0;
+        top: 0;
+    }
+
+    .project-description {
+        position: relative;
+        width: 100%;
+        left: 0;
+        padding: 4vw;
+    }
+}
+
+/* Estilos responsive para móvil */
+@media (max-width: 768px) {
+    /* Navegación móvil */
+    .main-nav {
+        padding: 12px 10px;
+        background: rgba(255,255,255,0.98);
+        backdrop-filter: blur(10px);
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    .main-nav a {
+        font-size: clamp(0.9em, 3.4vw, 1.05em);
+        padding: 0.15em 0.25em;
+        white-space: nowrap;
+    }
+
+    /* (removed empty .main-nav-right ruleset; overridden by stable nav rules at end) */
+
+    /* Layout de proyecto */
+    .project-detail {
+        padding: 80px 15px 40px;
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    /* Columna izquierda */
+    .project-left {
+        width: 100%;
+        margin-bottom: 40px;
+    }
+
+    .project-left h2 {
+        font-size: 32px;
+        margin-bottom: 30px;
+    }
+
+    .writing-item {
+        margin-bottom: 30px;
+    }
+
+    .writing-item h3 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .writing-item p {
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 15px;
+    }
+
+    /* Enlaces */
+    .writing-item a.read-more {
+        display: inline-block;
+        margin: 5px 0;
+        padding: 8px 0;
+        font-size: 16px;
+    }
+
+    /* Columna derecha */
+    .project-right {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    /* Descripción del proyecto */
+    .project-description {
+        margin-bottom: 30px;
+    }
+
+    .project-description p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    /* Imagen del proyecto */
+    .project-image {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+        margin-bottom: 40px;
+    }
+
+    .project-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Ajustes para la galería en index */
+    .v6_3 {
+        padding: 80px 15px 40px;
+    }
+
+    [class^="v6_"] {
+        width: 100% !important;
+        height: auto !important;
+        position: relative !important;
+        left: 0 !important;
+        top: 0 !important;
+        margin-bottom: 20px;
+    }
+
+    [class^="v6_"] img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4/3;
+        object-fit: cover;
+    }
+
+    .project-image {
+        display: none !important;
+    }
+}
+
+/* =========================================================
+   Stable nav: fixed positions (no shifting on italic/hover)
+   Put at end so it wins over earlier responsive blocks.
+   ========================================================= */
+.main-nav .main-nav-right {
+  display: grid !important;
+  grid-auto-flow: column !important;
+  grid-template-columns: 90px 55px 45px 85px !important; /* releases, live, bio, contact */
+  column-gap: 44px !important;
+  justify-content: end !important;
+  align-items: center !important;
+}
+
+.main-nav .main-nav-right > a {
+  width: 100% !important;
+  min-width: 0 !important;
+  text-align: center !important;
+}
+
+/* Avoid real italic (glyph width changes); simulate italic to prevent any jitter */
+.main-nav a:hover {
+  font-style: normal !important;
+}
+.main-nav a:hover .scramble {
+  display: inline-block;
+  transform: skewX(-12deg);
+}
+
+@media (max-width: 768px) {
+  .main-nav .main-nav-right {
+    grid-template-columns: repeat(4, 1fr) !important;
+    column-gap: 0 !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+  }
+
+  /* Mobile nav side margins */
+  .main-nav {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    width: calc(100% - 30px) !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* Ajustes adicionales para pantallas muy pequeñas */
+@media (max-width: 375px) {
+    .main-nav a {
+        font-size: 14px;
+    }
+
+    .project-left h2 {
+        font-size: 28px;
+    }
+
+    .writing-item h3,
+    .writing-item p,
+    .writing-item a.read-more,
+    .project-description p {
+        font-size: 14px;
+    }
+}
+
+.writings-grid h2,
+.writings-grid h3,
+.writings-grid p,
+.writings-grid a {
+    color: #8A9197;
+}
+
+/* Aseguramos que todos los textos sean legibles sobre fondo negro */
+.project-left h2,
+.project-left h3,
+.project-left p,
+.writing-item p,
+.writing-item a {
+    color: #8A9197;
+}
+
+/* Ajuste para el texto de navegación */
+.main-nav a.glitch-text {
+    font-size: 1.2rem;
+    background: transparent;
+    color: #8A9197;
+    animation: glitch 0.2s infinite alternate ease-in-out;
+    text-shadow: 0 0 1px rgba(251, 252, 255, 0.1);
+}
+
+.main-nav a.glitch-text:hover {
+    color: #FBFCFF;
+    font-style: italic;
+    text-shadow: 0 0 2px rgba(251, 252, 255, 0.2);
+}
+
+/* Efecto de blur ondulante para todo el texto */
+h1, h2, h3, h4, h5, h6, p, a, span {
+    filter: blur(0);
+    animation: text-focus 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: calc(var(--text-index, 0) * 0.15s);
+}
+
+/* Ajuste de índices para diferentes secciones */
+.project-detail * {
+    --text-index: 1;
+}
+
+.writing-item * {
+    --text-index: 2;
+}
+
+.writing-category * {
+    --text-index: 3;
+}
+
+.contact-section * {
+    --text-index: 4;
+}
+
+/* Ajuste para elementos específicos */
+.project-title {
+    --text-index: 0;
+}
+
+.project-description {
+    --text-index: 1;
+}
+
+.writing-item h3 {
+    --text-index: 2;
+}
+
+.writing-item p {
+    --text-index: 3;
+}
+
+/* Ajuste para enlaces */
+a {
+    --text-index: 4;
+}
+
+/* Ajuste para la navegación */
+.main-nav a {
+    --menu-index: 5;
+}
+
+/* Ajuste para elementos scramble */
+.scramble {
+    --text-index: 6;
+}
+
+@keyframes text-focus {
+    0% {
+        filter: blur(1px);
+        opacity: 0.85;
+    }
+    20% {
+        filter: blur(0.5px);
+        opacity: 0.9;
+    }
+    40% {
+        filter: blur(0.2px);
+        opacity: 0.95;
+    }
+    60% {
+        filter: blur(0.1px);
+        opacity: 0.97;
+    }
+    80% {
+        filter: blur(0.05px);
+        opacity: 0.99;
+    }
+    100% {
+        filter: blur(0);
+        opacity: 1;
+    }
+}
+
+.main-nav a span {
+    display: inline-block;
+    transform: translateX(0);
+    animation: letter-wave 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: calc(var(--letter-index) * 0.05s);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efecto de repulsión magnética al hover */
+.main-nav a:hover span {
+    animation: none;
+}
+
+/* Current works */
+.main-nav a[href="index.html"]:hover span:nth-child(1) { transform: translateX(-8px); }
+.main-nav a[href="index.html"]:hover span:nth-child(2) { transform: translateX(-6px); }
+.main-nav a[href="index.html"]:hover span:nth-child(3) { transform: translateX(-4px); }
+.main-nav a[href="index.html"]:hover span:nth-child(4) { transform: translateX(-2px); }
+.main-nav a[href="index.html"]:hover span:nth-child(5) { transform: translateX(0); }
+.main-nav a[href="index.html"]:hover span:nth-child(6) { transform: translateX(2px); }
+.main-nav a[href="index.html"]:hover span:nth-child(7) { transform: translateX(4px); }
+.main-nav a[href="index.html"]:hover span:nth-child(8) { transform: translateX(6px); }
+.main-nav a[href="index.html"]:hover span:nth-child(9) { transform: translateX(8px); }
+.main-nav a[href="index.html"]:hover span:nth-child(10) { transform: translateX(6px); }
+.main-nav a[href="index.html"]:hover span:nth-child(11) { transform: translateX(4px); }
+.main-nav a[href="index.html"]:hover span:nth-child(12) { transform: translateX(2px); }
+
+/* Bio */
+.main-nav a[href="bio.html"]:hover span:nth-child(1) { transform: translateX(-6px); }
+.main-nav a[href="bio.html"]:hover span:nth-child(2) { transform: translateX(0); }
+.main-nav a[href="bio.html"]:hover span:nth-child(3) { transform: translateX(6px); }
+
+/* Contact */
+.main-nav a[href="contact.html"]:hover span:nth-child(1) { transform: translateX(-8px); }
+.main-nav a[href="contact.html"]:hover span:nth-child(2) { transform: translateX(-6px); }
+.main-nav a[href="contact.html"]:hover span:nth-child(3) { transform: translateX(-4px); }
+.main-nav a[href="contact.html"]:hover span:nth-child(4) { transform: translateX(-2px); }
+.main-nav a[href="contact.html"]:hover span:nth-child(5) { transform: translateX(0); }
+.main-nav a[href="contact.html"]:hover span:nth-child(6) { transform: translateX(2px); }
+.main-nav a[href="contact.html"]:hover span:nth-child(7) { transform: translateX(4px); }
+
+/* Ajuste para el enlace scramble */
+.main-nav a.scramble:hover span {
+    transform: translateX(0);
+}
+
+/* Estilos para los enlaces de contacto */
+.contact-link {
+    color: #fff !important;
+    text-decoration: none;
+    font-family: 'EB Garamond', serif;
+    font-style: normal;
+    font-size: 0.95em;
+    transition: none;
+    position: relative;
+}
+
+.contact-link:hover {
+    color: #fff !important;
+    opacity: 0.8;
+    font-style: normal !important;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.55), 0 0 12px rgba(255, 255, 255, 0.35);
+}
+
+.contact-link::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2em;
+    color: rgba(251, 252, 255, 0.1);
+    white-space: nowrap;
+    opacity: 0;
+    transition: none;
+    z-index: -1;
+    text-transform: lowercase;
+}
+
+.contact-link:hover::after {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+    animation: font-switch 2s infinite;
+}
+
+/* Desactiva aura difusa en contacto/bio; se mantiene solo el texto */
+.contact-link::before,
+.contact-link:hover::before {
+    display: none !important;
+    content: none !important;
+}
+
+/* Estilos específicos para el proyecto licitir */
+.project-licitir::after {
+    content: 'LICITIR live';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    transform: none;
+    color: #fff;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: clamp(0.9em, 2vw, 1.1em);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 3;
+    pointer-events: none;
+    text-align: left;
+}
+
+.project-licitir:hover::after {
+    opacity: 1;
+    animation: scramble-text 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-licitir:hover::before {
+    animation: font-switch 2s infinite;
+}
+
+/* Estilos específicos para el proyecto licitir ep */
+.project-licitir-ep::after {
+    content: 'LICITIR - Tomorrow we dream of sleeping in a garden of camellias';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    transform: none;
+    color: #fff;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: clamp(0.9em, 2vw, 1.1em);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 3;
+    pointer-events: none;
+    text-align: left;
+    max-width: min(90%, 40ch);
+}
+
+.project-licitir-ep:hover::after {
+    opacity: 1;
+    animation: scramble-text 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-licitir-ep:hover::before {
+    animation: font-switch 2s infinite;
+}
+
+/* Estilos específicos para el proyecto pastoral */
+.project-pastoral::after {
+    content: '.pastoral live';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    transform: none;
+    color: #fff;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: clamp(0.9em, 2vw, 1.1em);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 3;
+    pointer-events: none;
+    text-align: left;
+}
+
+.project-pastoral:hover::after {
+    opacity: 1;
+    animation: scramble-text 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-pastoral:hover::before {
+    animation: font-switch 2s infinite;
+}
+
+/* Estilos específicos para el proyecto pastoral ep */
+.project-pastoral-ep::after {
+    content: '.pastoral - Un corazón mustio y marchito por culpa de las tribulaciones y los padecimientos';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    transform: none;
+    color: #fff;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: clamp(0.9em, 2vw, 1.1em);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 3;
+    pointer-events: none;
+    text-align: left;
+    max-width: min(90%, 40ch);
+}
+
+.project-pastoral-ep:hover::after {
+    opacity: 1;
+    animation: scramble-text 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-pastoral-ep:hover::before {
+    animation: font-switch 2s infinite;
+}
+
+/* Efecto de transición eléctrica al hacer click en proyectos */
+.electric-transition {
+    animation: electric-blur 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    pointer-events: none;
+}
+
+@keyframes electric-blur {
+    0% {
+        filter: blur(0);
+        opacity: 1;
+    }
+    25% {
+        filter: blur(12px);
+        opacity: 0.6;
+    }
+    50% {
+        filter: blur(8px);
+        opacity: 0.8;
+    }
+    75% {
+        filter: blur(4px);
+        opacity: 0.9;
+    }
+    100% {
+        filter: blur(0);
+        opacity: 1;
+    }
+}
+
+/* Efecto de parpadeo eléctrico */
+.electric-flicker {
+    animation: electric-flicker 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes electric-flicker {
+    0% {
+        filter: brightness(1);
+    }
+    33% {
+        filter: brightness(1.2);
+    }
+    66% {
+        filter: brightness(0.9);
+    }
+    100% {
+        filter: brightness(1);
+    }
+}
+
+.element.data h2 {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    color: #fff;
+    font-size: 2.5em;
+    margin-bottom: 1rem;
+}
+
+.element.data p {
+    margin-bottom: 1.5rem;
+    font-size: 0.8em;
+    line-height: 1.4;
+}
+
+/* Reducir espacio para saltos de línea simples (convertidos de <p><br></p>) */
+.element.data br.bio-line-break {
+    display: block;
+    margin-bottom: 0.5rem;
+    line-height: 0.5rem;
+}
+
+/* Reducir margen para párrafos vacíos */
+.element.data p:empty {
+    margin-bottom: 0;
+    min-height: 0;
+    line-height: 0;
+}
+
+.element.data .divider {
+    font-family: serif;
+    color: #666;
+    line-height: 1;
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.project-text {
+    font-family: 'EB Garamond', serif;
+    font-size: 0.8em;
+    line-height: 1.4;
+    color: #8A9197;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.project-text p {
+    margin-bottom: 10px;
+}
+
+.project-text p:last-child {
+    margin-bottom: 0;
+}
+
+@media (orientation: portrait) {
+    .project-text {
+        margin-top: 1rem;
+        font-size: 0.9em;
+        padding-left: 0;
+        text-align: left;
+    }
+}
+
+.v1_6 {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: calc(100vh - 80px);
+    margin-top: 80px;
+    position: relative;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.v5_57 {
+    width: 50%;
+    height: 100%;
+    padding: 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.v5_59 {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+    box-sizing: border-box;
+    position: relative;
+    background: transparent;
+}
+
+.project-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.project-text {
+    margin-top: 2rem;
+    font-family: 'EB Garamond', serif;
+    font-size: 1.2em;
+    line-height: 1.6;
+    color: #8A9197;
+}
+
+.project-text p {
+    margin-bottom: 1.5rem;
+}
+
+.project-text p:last-child {
+    margin-bottom: 0;
+}
+
+@media (orientation: portrait) {
+    .v5_59 {
+        width: 100%;
+        height: 50vh;
+        padding: 0;
+    }
+
+    .project-image {
+        position: relative;
+        height: 100%;
+    }
+}
+
+/* Square image for project 4 */
+.project-4 .v5_59 {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-sizing: border-box;
+    position: relative;
+    background: transparent;
+}
+
+.project-4 .project-image {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@media (orientation: portrait) {
+    .project-4 .v5_59 {
+        width: 100%;
+        height: 50vh;
+        padding: 0;
+    }
+
+    .project-4 .project-image {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Estilos base para el texto del proyecto */
+.project-text {
+    font-family: 'EB Garamond', serif;
+    font-size: 1em;
+    line-height: 1.4;
+    color: #8A9197;
+    margin-top: 20px;
+}
+
+.project-text p {
+    margin-bottom: 10px;
+}
+
+.project-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* Estilos específicos para el contenedor del proyecto */
+.v1_6 {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: calc(100vh - 80px);
+    margin-top: 80px;
+    position: relative;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.v5_57 {
+    width: 50%;
+    height: 100%;
+    padding: 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.v5_59 {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+    box-sizing: border-box;
+    position: relative;
+    background: transparent;
+}
+
+@media (orientation: portrait) {
+    .project-text {
+        margin-top: 1rem;
+        font-size: 0.9em;
+        padding-left: 0;
+    }
+
+    .v5_59 {
+        width: 100%;
+        height: 50vh;
+        padding: 0;
+    }
+}
+
+/* Estilos para el contenedor del proyecto */
+.project-container {
+    width: 100%;
+    height: calc(100vh - 80px);
+    margin-top: 80px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.project-title {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    color: #fff;
+    font-size: 2em;
+    margin: 0;
+    padding-left: 7px;
+    padding-right: 7px;
+    text-align: center;
+}
+
+/* Live detail pages: add +10px left padding to titles */
+.project-container[class*="-live"] > .project-title {
+    padding-left: 17px;
+}
+
+/* Live detail: bring slideshow 1 closer to the title */
+.project-live-detail .performance-gallery {
+  margin-top: 0rem;
+}
+
+.media-container {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    height: 100%;
+    align-items: stretch;
+    grid-auto-rows: 1fr;
+}
+
+.image-section, .video-section {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+}
+
+.image-section .media-slider,
+.image-section .media-slider .slide,
+.image-section picture,
+.image-section img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+}
+
+.project-image {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+.project-video {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    object-fit: contain;
+}
+
+/* Ajustes responsive */
+@media (orientation: portrait) {
+    .project-container {
+        height: auto;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .media-container {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .image-section, .video-section {
+        height: 50vh;
+    }
+
+    .project-title {
+        font-size: 1.8em;
+    }
+}
+
+.video-section {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.project-video {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    aspect-ratio: 16/9;
+}
+
+/* Ajustes responsive */
+@media (orientation: portrait) {
+    .video-section {
+        padding: 10px;
+    }
+}
+
+.main-nav a::after {
+    filter: blur(8px) !important;
+    opacity: 0.35 !important;
+}
+
+.main-nav a:hover::after {
+    filter: blur(12px) !important;
+    opacity: 0.22 !important;
+}
+
+.element.data p {
+    margin-bottom: 1.5rem;
+    font-size: 0.8em;
+    line-height: 1.4;
+}
+
+@media (orientation: portrait) {
+    .element.data p {
+        font-size: 0.9em;
+    }
+}
+
+/* --- MENÚ MÓVIL CENTRALIZADO PARA TODAS LAS PÁGINAS --- */
+@media (max-width: 768px) {
+    .main-nav {
+        width: 100vw !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        z-index: 100 !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        min-height: 56px !important;
+        height: auto !important;
+        max-height: none !important;
+        background: #000 !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-bottom: 1px solid rgba(138, 145, 151, 0.6) !important;
+        margin: 0 !important;
+        padding: 8px 10px !important;
+    }
+    .main-nav-right {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+        height: auto !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        border: none !important;
+        background: none !important;
+        margin: 0 !important;
+        gap: 6px !important;
+        flex-wrap: nowrap !important;
+        overflow: hidden !important;
+    }
+    .main-nav a {
+        color: #8A9197 !important;
+        font-family: 'EB Garamond', serif !important;
+        font-size: clamp(0.85em, 3.2vw, 1.0em) !important;
+        font-style: normal !important;
+        font-weight: 500 !important;
+        text-decoration: none !important;
+        transition: none !important;
+        box-shadow: none !important;
+        filter: none !important;
+        outline: none !important;
+        text-align: center !important;
+        line-height: 1.15 !important;
+        white-space: nowrap !important;
+        padding: 0.16em 0.22em !important;
+        margin: 0 !important;
+        background: none !important;
+        border: none !important;
+    }
+    .main-nav a:hover,
+    .main-nav a:active {
+        color: #fff !important;
+        font-style: italic !important;
+        transition: none !important;
+        box-shadow: none !important;
+        filter: none !important;
+    }
+    .main-nav-left { 
+        display: none !important; 
+    }
+}
+
+@media (max-width: 512px) {
+    .main-nav-right {
+        padding: 0 calc(12px + (100vw - 512px) * 0.02) !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100vw !important;
+        height: 100% !important;
+        box-sizing: border-box !important;
+    }
+    .main-nav a {
+        font-size: clamp(1.02em, 3.8vw, 1.28em) !important;
+        padding: 0.2em 0.3em !important;
+        white-space: nowrap !important;
+        min-width: auto !important;
+        width: auto !important;
+        margin: 0 !important;
+    }
+    .main-nav a[href="index.html"] {
+        text-align: left !important;
+        margin-left: calc(6px + (100vw - 512px) * 0.01) !important;
+    }
+    .main-nav a[href="bio.html"] {
+        text-align: center !important;
+    }
+    .main-nav a[href="contact.html"] {
+        text-align: right !important;
+        margin-right: calc(6px + (100vw - 512px) * 0.01) !important;
+    }
+}
+
+@media (max-width: 360px) {
+    .main-nav-right {
+        padding: 0 calc(8px + (100vw - 360px) * 0.02) !important;
+    }
+    .main-nav a {
+        font-size: clamp(0.95em, 3.4vw, 1.15em) !important;
+        padding: 0.2em 0.25em !important;
+    }
+    .main-nav a[href="index.html"] {
+        margin-left: calc(4px + (100vw - 360px) * 0.01) !important;
+    }
+    .main-nav a[href="contact.html"] {
+        margin-right: calc(4px + (100vw - 360px) * 0.01) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Proyecto 2, 4 y 6: texto ocupa toda la pantalla */
+    .project-2 .v1_6,
+    .project-4 .v1_6,
+    .project-6 .v1_6 {
+        flex-direction: column !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        margin: 0 !important;
+        height: auto !important;
+        align-items: stretch !important;
+    }
+    .project-2 .v5_57,
+    .project-4 .v5_57,
+    .project-6 .v5_57 {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        padding: 24px 6vw 0 6vw !important;
+        box-sizing: border-box !important;
+        align-items: flex-start !important;
+    }
+    .project-2 .project-title,
+    .project-4 .project-title,
+    .project-6 .project-title {
+        font-size: 1.2em !important;
+        margin-bottom: 1em !important;
+        text-align: left !important;
+    }
+    .project-2 .project-text,
+    .project-4 .project-text,
+    .project-6 .project-text {
+        font-size: 1.1em !important;
+        line-height: 1.7 !important;
+        color: #8A9197 !important;
+        text-align: left !important;
+        margin-top: 0 !important;
+        padding: 0 !important;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Ocultar la sección derecha (imagen) en proyectos 2, 4 y 6 */
+    .project-2 .v5_59,
+    .project-4 .v5_59,
+    .project-6 .v5_59 {
+        display: none !important;
+    }
+}
+
+@media (min-width: 769px) {
+    /* Títulos principales */
+    h1, .project-title, .element.data h2 {
+        font-size: 2em !important;
+    }
+    /* Subtítulos */
+    h2, h3, .writing-category h2 {
+        font-size: 1.3em !important;
+    }
+    /* Texto normal y bio */
+    p, .element.data p, .project-text {
+        font-size: 1em !important;
+    }
+    /* Enlaces secundarios, metadatos, detalles */
+    .contact-link, .project-metadata, .project-links a, .writing-item a.read-more {
+        font-size: 0.95em !important;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Títulos principales - igual que Bio */
+    h1, .project-title, .element.data h2 {
+        font-size: 1.5em !important;          /* Bio mobile */
+        line-height: 1.3 !important;
+        margin-bottom: 1rem !important;
+    }
+    /* Subtítulos */
+    h2, h3, .writing-category h2 {
+        font-size: 1.1em !important;
+    }
+    /* Texto normal y bio */
+    p, .element.data p, .project-text {
+        font-size: 1em !important;
+        line-height: 1.4 !important;          /* Bio mobile */
+    }
+    /* Enlaces secundarios, metadatos, detalles */
+    .contact-link, .project-metadata, .project-links a, .writing-item a.read-more {
+        font-size: 0.95em !important;
+    }
+}
+
+.project-1 .project-title,
+.project-3 .project-title,
+.project-5 .project-title,
+.project-diamantista-live .project-title,
+.project-licitir-live .project-title,
+.project-pastoral-live .project-title {
+    text-align: left !important;
+    align-self: flex-start !important;
+    padding-left: 17px !important; /* 7px base + 10px extra */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.video-section iframe.project-video {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    min-height: 180px;
+    display: block;
+    object-fit: contain;
+    aspect-ratio: 16/9;
+}
+
+.project-text, .project-text p {
+    font-size: 1em !important;
+    line-height: 1.7;
+    color: #8A9197;
+}
+
+/* Unificación tipográfica Bio y Proyectos 2/4/6 (máxima precedencia) */
+@media (min-width: 769px) {
+  /* Títulos: igual que Bio */
+  .element.data h2,
+  .project-left h2 {
+    font-size: 2.5em !important;
+    line-height: 1.2 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  /* Cuerpo: igual que Bio */
+  .project-2 .project-text,
+  .project-4 .project-text,
+  .project-6 .project-text,
+  .element.data p,
+  .project-2 .project-text p,
+  .project-4 .project-text p,
+  .project-6 .project-text p {
+    font-size: 1em !important;
+    line-height: 1.4 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Títulos móviles: igual que Bio */
+  .element.data h2,
+  .project-left h2 {
+    font-size: 1.5em !important;
+    line-height: 1.3 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  /* Cuerpo móvil: igual que Bio */
+  .project-2 .project-text,
+  .project-4 .project-text,
+  .project-6 .project-text,
+  .element.data p,
+  .project-2 .project-text p,
+  .project-4 .project-text p,
+  .project-6 .project-text p {
+    font-size: 1em !important;
+    line-height: 1.4 !important;
+  }
+}
+
+/* Mobile menu styles */
+@media (max-width: 768px) {
+    .menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: black;
+        padding: 1em 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        gap: 1.5em;
+        margin: 0;
+        border: none;
+    }
+
+    .menu a {
+        color: white;
+        text-decoration: none;
+        font-size: 1em;
+        transition: color 0.3s ease;
+    }
+
+    .menu a:hover {
+        color: white;
+    }
+
+    .menu a::after {
+        display: none;
+    }
+
+    .menu a::before {
+        display: none;
+    }
+
+    .menu a span {
+        display: none;
+    }
+
+    .menu a:hover span {
+        display: none;
+    }
+    
+    /* Disable all hover transforms to prevent menu movement on mobile */
+    .main-nav a:hover span,
+    .main-nav a[href="index.html"]:hover span,
+    .main-nav a[href="bio.html"]:hover span,
+    .main-nav a[href="contact.html"]:hover span,
+    .main-nav a:hover,
+    .main-nav a {
+        transform: none !important;
+        transition: none !important;
+    }
+    
+    /* Ensure menu items don't move on mobile */
+    .main-nav a {
+        transform: none !important;
+        transition: color 0.3s ease !important;
+    }
+    
+    .main-nav a:hover {
+        transform: none !important;
+    }
+    
+    /* Prevent scramble layout shift on mobile but keep animation */
+    .scramble {
+        transform: none !important;
+        transition: opacity 0.3s ease !important;
+        filter: none !important;
+    }
+    
+    .scramble.visible {
+        transform: none !important;
+        filter: none !important;
+    }
+    
+    /* Make glitch characters less jarring on mobile */
+    .glitching {
+        opacity: 0.7 !important;
+        animation: none !important;
+    }
+    
+    /* Ensure scramble doesn't affect layout on mobile */
+    .scramble + *,
+    .scramble ~ * {
+        position: static !important;
+        transform: none !important;
+    }
+}
+
+/* Back to Top button - Base styles */
+#backToTop {
+  display: none; /* Hidden by default */
+  position: fixed;
+  right: 18px;
+  bottom: 10px;
+  z-index: 10000;
+  background: none;
+  color: #fff;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  font-size: 1.1em;
+  font-family: 'EB Garamond', serif;
+  opacity: 0.85;
+  box-shadow: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  text-decoration: underline;
+  pointer-events: auto;
+}
+
+#backToTop:hover {
+  opacity: 1;
+  text-decoration: none;
+  background: none;
+}
+
+@media (max-width: 768px) {
+  html, body {
+    height: auto !important;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto !important;
+  }
+  .project-1 .project-container,
+  .project-3 .project-container,
+  .project-5 .project-container {
+    min-height: 100vh;
+    height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    padding-top: 60px; /* altura del menú fijo */
+  }
+  .project-1 .media-container,
+  .project-3 .media-container,
+  .project-5 .media-container {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 0;
+    height: 100%;
+    gap: 0;
+  }
+  .project-1 .video-section,
+  .project-3 .video-section,
+  .project-5 .video-section {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    min-height: 220px;
+    max-height: 70vh;
+    width: 100%;
+    background: #000;
+    margin: 0;
+    padding: 0;
+  }
+  .project-1 .project-video,
+  .project-3 .project-video,
+  .project-5 .project-video {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100vw;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .releases-grid .project-link::after {
+    display: block !important;
+    content: attr(data-title);
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #8A9197;
+    font-family: 'EB Garamond', serif;
+    font-style: normal;
+    font-size: clamp(0.8em, 1.5vw, 1.2em);
+    opacity: 0;
+    transition: opacity 0.3s ease, color 0.3s;
+    z-index: 3;
+    pointer-events: none;
+    width: 90%;
+    text-align: left;
+    line-height: 1.2;
+    animation: none;
+  }
+  .releases-grid .project-link.visible::after {
+    opacity: 1;
+    font-style: italic;
+    color: #fff;
+    animation: scramble-text 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@keyframes scramble-text {
+  0% {
+    opacity: 0.2;
+    filter: blur(2px);
+    letter-spacing: 0.2em;
+  }
+  40% {
+    opacity: 0.7;
+    filter: blur(1px);
+    letter-spacing: 0.1em;
+  }
+  80% {
+    opacity: 1;
+    filter: blur(0.2px);
+    letter-spacing: 0.02em;
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    letter-spacing: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .project-caption {
+    display: block !important;
+    font-family: 'EB Garamond', serif;
+    font-style: italic !important;
+    color: #fff !important;
+    font-size: 0.8em;
+    text-align: left;
+    margin: 8px 0 0 0;
+    padding-left: 0;
+    letter-spacing: 0.01em;
+    line-height: 1.3;
+    font-weight: 400;
+    width: 100%;
+    max-width: 100%;
+    word-break: break-word;
+    align-self: flex-start;
+  }
+
+  /* Back to Top button - Mobile override */
+  #backToTop {
+    display: block; /* Show on mobile */
+  }
+}
+
+.project-caption {
+  display: none;
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  color: #fff;
+  font-size: 0.8em;
+  text-align: left;
+  margin-top: 8px;
+  padding-left: 2px;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+  font-weight: 400;
+  width: 100%;
+  max-width: 100%;
+  word-break: break-word;
+}
+
+.main-nav a.flash::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: white;
+  opacity: 0.95;
+  pointer-events: none;
+  border-radius: 6px;
+  z-index: 10;
+  animation: nav-flash 0.22s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+
+@keyframes nav-flash {
+  0% { opacity: 0.95; }
+  80% { opacity: 0.7; }
+  100% { opacity: 0; }
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: transparent;
+  filter: none;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.project-1 .project-title,
+.project-1 .project-container,
+.project-1 .media-container,
+.project-1 .video-section,
+.project-1 .project-video,
+.project-1 .v5_59,
+.project-1 .image-section {
+  background: none !important;
+}
+
+.project-1 .v5_59::before,
+.project-1 .v5_59::after,
+.project-1 .project-container::before,
+.project-1 .project-container::after,
+.project-1 .media-container::before,
+.project-1 .media-container::after,
+.project-1 .video-section::before,
+.project-1 .video-section::after,
+.project-1 .image-section::before,
+.project-1 .image-section::after {
+  display: none !important;
+  background: none !important;
+}
+
+.project-1 .image-section {
+  background: transparent !important;
+}
+
+.project-1 .v5_59,
+.project-3 .v5_59,
+.project-5 .v5_59 {
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  /* Removed conflicting mobile overrides that forced full-screen black video containers */
+}
+
+/* Removed mobile override that hid ::before/::after on project links */
+
+/* === Overrides finales para igualar tipografías Bio vs Projects 2/4/6 === */
+@media (min-width: 769px) {
+  /* Igualar contexto: em en proyectos calculan como en Bio (.element) */
+  .project-2 .project-left,
+  .project-4 .project-left,
+  .project-6 .project-left,
+  .project-2 .v5_57,
+  .project-4 .v5_57,
+  .project-6 .v5_57 {
+    font-size: 1.1vw !important;
+    line-height: 1.8 !important;
+  }
+
+  /* Títulos idénticos a Bio */
+  .project-2 .project-left h2,
+  .project-4 .project-left h2,
+  .project-6 .project-left h2,
+  .element.data h2 {
+    font-size: 2.5em !important;
+    line-height: 1.2 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  /* Cuerpo idéntico a Bio */
+  .project-2 .project-text,
+  .project-4 .project-text,
+  .project-6 .project-text,
+  .project-2 .project-text p,
+  .project-4 .project-text p,
+  .project-6 .project-text p,
+  .element.data p {
+    font-size: 1em !important;
+    line-height: 1.4 !important;
+    margin-bottom: 1.5rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Igualar contexto móvil como Bio (.element) */
+  .project-2 .project-left,
+  .project-4 .project-left,
+  .project-6 .project-left,
+  .project-2 .v5_57,
+  .project-4 .v5_57,
+  .project-6 .v5_57 {
+    font-size: 0.9em !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Títulos móviles iguales a Bio */
+  .project-2 .project-left h2,
+  .project-4 .project-left h2,
+  .project-6 .project-left h2,
+  .element.data h2 {
+    font-size: 1.5em !important;
+    line-height: 1.3 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  /* Cuerpo móvil idéntico a Bio */
+  .project-2 .project-text,
+  .project-4 .project-text,
+  .project-6 .project-text,
+  .project-2 .project-text p,
+  .project-4 .project-text p,
+  .project-6 .project-text p,
+  .element.data p {
+    font-size: 1em !important;
+    line-height: 1.4 !important;
+    margin-bottom: 1.5rem !important;
+  }
+}
+
+/* Performance card styling */
+.project-pastoral-performance {
+  grid-column: 1 / -1;
+  grid-row: 1 / 2;
+}
+
+.project-pastoral-performance img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Media Slider */
+.media-slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  contain: layout style;
+}
+
+.slide {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.project-live-detail .slide {
+  aspect-ratio: 16 / 9;
+}
+
+/* Mobile Live detail: show slideshow1, slideshow2, video in vertical stack */
+@media (max-width: 768px) {
+  .project-live-detail {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 17px !important;
+    gap: 17px !important;
+    overflow: visible !important;
+    height: auto !important;
+    min-height: auto !important;
+  }
+  
+  .project-live-detail .project-detail-content {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 17px !important;
+  }
+  
+  .project-live-detail .element.data,
+  .project-live-detail .performance-gallery {
+    display: block !important;
+    width: 100% !important;
+  }
+  
+  .project-live-detail .media-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 17px !important;
+    height: auto !important;
+  }
+  
+  .project-live-detail .image-section {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 200px !important;
+  }
+  
+  .project-live-detail .video-section {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 200px !important;
+  }
+  
+  .project-live-detail .image-section .media-slider,
+  .project-live-detail .video-section .project-video {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9 !important;
+  }
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+/* Landing slideshow fills viewport under nav */
+.landing-hero {
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  margin-top: 80px;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.landing-hero .media-slider {
+  flex: 1;
+  height: calc(100vh - 80px - 40px);
+  align-items: center;
+}
+
+/* Landing: fixed horizontal frame for all slides */
+.landing-hero .slide {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1706 / 1145;
+}
+
+.landing-hero .slide img {
+  width: 100%;
+  height: 100%;
+}
+
+/* Desktop: crop to fill the horizontal frame */
+@media (min-width: 769px) {
+  .landing-hero .slide img {
+    object-fit: cover;
+  }
+}
+
+/* Mobile: keep full image visible + no scroll */
+@media (max-width: 768px) {
+  .landing-hero {
+    min-height: calc(100vh - 56px);
+    margin-top: 56px;
+    padding: 0;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .landing-hero .media-slider {
+    height: calc(100vh - 56px);
+  }
+  .landing-hero .slide img {
+    object-fit: contain;
+  }
+}
+
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  z-index: 10001; /* ensure clickable above overlays */
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.slider-btn:hover {
+  background: transparent;
+  transform: translateY(-50%) scale(1.1);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6);
+}
+
+.slider-btn.prev {
+  left: 1rem;
+}
+
+.slider-btn.next {
+  right: 1rem;
+}
+
+/* Crossfade Gallery */
+.crossfade-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.crossfade-image {
+  position: absolute; /* Use absolute positioning for proper layering */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0; /* Start with opacity 0 for crossfade effect */
+  transition: opacity 0.3s ease;
+  display: block;
+}
+
+.crossfade-image.loaded,
+.crossfade-image.visible {
+  opacity: 1;
+}
+
+/* Crossfade Navigation Buttons */
+.crossfade-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  z-index: 10001; /* ensure clickable above overlays */
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.crossfade-btn:hover {
+  background: transparent;
+  transform: translateY(-50%) scale(1.1);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6);
+}
+
+.crossfade-btn.prev {
+  left: 1rem;
+}
+
+.crossfade-btn.next {
+  right: 1rem;
+}
+
+/* Mobile adjustments for crossfade buttons */
+@media (max-width: 768px) {
+  .crossfade-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  }
+  
+  .crossfade-btn:hover {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6);
+  }
+  
+  .crossfade-btn.prev {
+    left: 0.5rem;
+  }
+  
+  .crossfade-btn.next {
+    right: 0.5rem;
+  }
+}
+
+/* Slideshow click/tap reliability fixes (iOS Safari) */
+.media-slider,
+.crossfade-container {
+  position: relative;
+  z-index: 0;
+}
+
+/* Ensure media doesn't intercept taps so buttons receive them */
+.media-slider .slide img,
+.crossfade-container .crossfade-image {
+  pointer-events: none;
+}
+
+/* Make controls always interactive and responsive to taps */
+.slider-btn,
+.crossfade-btn {
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+/* Increase touch target on mobile */
+@media (max-width: 768px) {
+  .slider-btn,
+  .crossfade-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 1.6rem;
+  }
+}
+
+/* Performance specific styles */
+.performance-video {
+  margin-bottom: 2rem;
+  background: transparent !important; /* Always transparent, never black */
+}
+
+.performance-video iframe {
+  width: 100%;
+  height: 400px;
+  border: none;
+}
+
+.performance-gallery {
+  margin-top: 2rem;
+  background: transparent !important; /* Always transparent, never black */
+}
+
+.performance-gallery h3 {
+  margin-bottom: 1rem;
+  font-family: 'EB Garamond', serif;
+  font-size: 0.8em;
+  line-height: 1.4;
+  color: #8A9197;
+}
+
+/* Updated thumbnail styles */
+.project-link.project-licitir img,
+.project-link.project-pastoral-ep img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .slider-btn {
+    padding: 0.5rem 0.25rem;
+    font-size: 1.2rem;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  }
+  
+  .slider-btn:hover {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6);
+  }
+  
+  .slider-btn.prev {
+    left: 0.5rem;
+  }
+  
+  .slider-btn.next {
+    right: 0.5rem;
+  }
+  
+  .performance-video iframe {
+    height: 250px;
+  }
+}
+
+/* Scramble effect styles */
+.scramble {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.scramble.visible {
+  opacity: 1;
+}
+
+.glitching {
+  color: #757575;
+}
+
+/* Prevent layout shift during scramble */
+.scramble + *,
+.scramble ~ * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Instagram Widget */
+.instagram-widget {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+.instagram-widget h3 {
+  font-family: 'EB Garamond', serif;
+  font-size: 0.8em;
+  line-height: 1.4;
+  color: #8A9197;
+  margin-bottom: 1rem;
+}
+
+.instagram-embed {
+  width: 100%;
+  height: 400px;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+/* Mobile adjustments for Instagram widget */
+@media (max-width: 768px) {
+  .instagram-widget {
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .instagram-embed {
+    height: 300px;
+  }
+}
+
+/* Mobile layout for live pages */
+@media (max-width: 768px) {
+  .project-1 .media-container,
+  .project-3 .media-container,
+  .project-5 .media-container {
+    flex-direction: column;
+    gap: 20px;
+    height: auto;
+    min-height: auto;
+  }
+  
+  .project-1 .image-section,
+  .project-3 .image-section,
+  .project-5 .image-section {
+    height: 40vh;
+    min-height: 200px;
+    max-height: 300px;
+  }
+  
+  .project-1 .video-section,
+  .project-3 .video-section,
+  .project-5 .video-section {
+    height: 40vh;
+    min-height: 200px;
+    max-height: 300px;
+  }
+  
+  /* Specific mobile rules for pastoral live to align both slideshows */
+  .project-5 .performance-gallery {
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .project-5 .media-container {
+    margin-top: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Ensure both slideshows have consistent spacing in mobile */
+  .project-5 .performance-gallery,
+  .project-5 .media-container .image-section {
+    margin-bottom: 20px !important;
+    padding: 0 !important;
+  }
+  
+  /* Ensure CrossfadeGallery is visible on mobile */
+  .project-5 .CrossfadeGallery {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    position: relative !important;
+    margin-bottom: 20px !important;
+  }
+  
+  .project-5 .CrossfadeGallery .crossfade-container {
+    height: 250px !important;
+    width: 100% !important;
+    position: relative !important;
+    overflow: hidden !important;
+  }
+  
+  .project-5 .CrossfadeGallery .crossfade-image {
+    height: 250px !important;
+    width: 100% !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    object-fit: cover !important;
+    opacity: 1 !important;
+    transition: opacity 0.3s ease !important;
+  }
+  
+  /* Global CrossfadeGallery fixes - simplified */
+  .CrossfadeGallery .crossfade-image {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    opacity: 1 !important;
+    transition: opacity 0.3s ease !important;
+    display: block !important;
+    object-fit: cover !important;
+  }
+  
+  .CrossfadeGallery .crossfade-container {
+    position: relative !important;
+    overflow: hidden !important;
+    transition: none !important;
+    animation: none !important;
+  }
+
+  /* Ensure CrossfadeGallery is visible on mobile */
+  .CrossfadeGallery {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    position: relative !important;
+  }
+  
+  .CrossfadeGallery .crossfade-container {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    position: relative !important;
+  }
+}
+
+@media (orientation: portrait) {
+    .media-container {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        height: auto;
+    }
+
+    .image-section, .video-section {
+        height: 50vh;
+    }
+
+    .project-title {
+        font-size: 1.8em;
+    }
+}
+
+/* Live page container adjustments */
+.project-1 .project-container,
+.project-3 .project-container,
+.project-5 .project-container {
+  height: auto;
+  min-height: 100vh;
+  overflow: visible;
+  background: #000 !important;
+  align-items: flex-start;
+}
+
+@media (max-width: 768px) {
+  .project-1 .project-container,
+  .project-3 .project-container,
+  .project-5 .project-container {
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    background: #000 !important;
+  }
+}
+
+/* Video fallback styles */
+.video-fallback {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  margin-top: 1rem;
+  font-family: 'EB Garamond', serif;
+  font-size: 0.9em;
+  color: #8A9197;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.video-fallback strong {
+  color: #666;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1em;
+}
+
+.video-fallback a {
+  margin-top: 1rem;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.video-fallback a:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Double-buffer crossfade states - simplified */
+.CrossfadeGallery .crossfade-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.CrossfadeGallery .crossfade-image.visible {
+  opacity: 1;
+}
+
+.CrossfadeGallery .crossfade-image.fade-in {
+  opacity: 1;
+}
+
+.CrossfadeGallery .crossfade-image.fade-out {
+  opacity: 0;
+}
+
+.CrossfadeGallery .crossfade-image.hidden {
+  opacity: 0;
+}
+
+/* Mobile: lock height to prevent video movement */
+@media (max-width: 768px) {
+  .project-5 .CrossfadeGallery .crossfade-container {
+    height: 250px !important;
+    min-height: 250px !important;
+    max-height: 250px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Ensure CrossfadeGallery container gets a real height on mobile (same element has both classes) */
+  .project-5 .image-section .CrossfadeGallery.crossfade-container,
+  .project-5 .CrossfadeGallery.crossfade-container {
+    height: 250px !important;
+    min-height: 250px !important;
+    max-height: 250px !important;
+    width: 100% !important;
+    position: relative !important;
+    overflow: hidden !important;
+  }
+
+  /* Allow state classes (visible/fade-in/fade-out) to control opacity; don't force 1 */
+  .CrossfadeGallery .crossfade-image {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    /* remove any previous opacity:1 !important overrides */
+    transition: opacity 0.3s ease !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Ensure image-section shows and stacks above video */
+  .project-5 .image-section {
+    display: block !important;
+    position: relative !important;
+    z-index: 2 !important;
+    height: 40vh !important;
+    min-height: 220px !important;
+    max-height: 320px !important;
+    overflow: hidden !important;
+  }
+  .project-5 .video-section {
+    position: relative !important;
+    z-index: 1 !important;
+  }
+  
+  /* Make the gallery container match its parent block height */
+  .project-5 .image-section .CrossfadeGallery.crossfade-container,
+  .project-5 .CrossfadeGallery.crossfade-container {
+    height: 40vh !important;
+    min-height: 220px !important;
+    max-height: 320px !important;
+    width: 100% !important;
+    position: relative !important;
+    overflow: hidden !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important; /* container visible (not images) */
+  }
+  
+  /* Ensure CrossfadeGallery images are visible and properly positioned */
+  .project-5 .CrossfadeGallery .crossfade-image {
+    height: 40vh !important;
+    min-height: 220px !important;
+    max-height: 320px !important;
+    width: 100% !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    object-fit: cover !important;
+    opacity: 0 !important; /* Start with opacity 0, let state classes control */
+    transition: opacity 0.3s ease !important;
+  }
+  
+  /* Global CrossfadeGallery rules for mobile */
+  .CrossfadeGallery .crossfade-image {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    transition: opacity 0.3s ease !important;
+  }
+  
+  .CrossfadeGallery .crossfade-container {
+    position: relative !important;
+    overflow: hidden !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Safari mobile fixes for video elements */
+@media (max-width: 768px) {
+  /* Fix floating play button and z-index issues in Safari mobile */
+  .project-1 .video-section,
+  .project-3 .video-section,
+  .project-5 .video-section {
+    position: relative !important;
+    z-index: 1 !important;
+    overflow: hidden !important;
+    /* Center video section and add equal margins */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 20px !important; /* Equal margins on both sides */
+    box-sizing: border-box !important;
+    /* Remove black background on mobile */
+    background: transparent !important;
+    height: auto !important;
+    min-height: auto !important;
+  }
+  
+  .project-1 .project-video,
+  .project-3 .project-video,
+  .project-5 .project-video {
+    position: relative !important;
+    z-index: 1 !important;
+    /* Safari mobile specific fixes */
+    -webkit-transform: translateZ(0) !important;
+    transform: translateZ(0) !important;
+    /* Prevent floating play button */
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    /* Better video size for mobile */
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 200px !important;
+    object-fit: contain !important;
+  }
+}
+
+/* Desktop equalized heights for live pages - ONLY on desktop */
+@media (min-width: 769px) {
+  /* Set a consistent vertical band for live media rows */
+  .project-1 .media-container,
+  .project-3 .media-container,
+  .project-5 .media-container {
+    height: 70vh !important;
+    min-height: 520px !important;
+    max-height: 80vh !important;
+    align-items: stretch !important;
+  }
+
+  /* Image and video sections fill the band with black background - ONLY on desktop */
+  .project-1 .image-section,
+  .project-3 .image-section,
+  .project-5 .image-section,
+  .project-1 .video-section,
+  .project-3 .video-section,
+  .project-5 .video-section {
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #000 !important; /* letterbox for contain - ONLY on desktop */
+    overflow: hidden !important;
+  }
+
+  /* Use contain to avoid cropping images - ONLY on desktop */
+  .project-1 .project-image,
+  .project-3 .project-image {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important; /* no cropping */
+    max-width: 100% !important;
+    max-height: 100% !important;
+  }
+
+  /* Videos fill container without cropping - ONLY on desktop */
+  .project-1 .project-video,
+  .project-3 .project-video,
+  .project-5 .project-video,
+  .video-section iframe.project-video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important; /* for <video>; safe for others */
+    max-width: 100% !important;
+    max-height: 100% !important;
+  }
+
+  /* CrossfadeGallery should fill its section without cropping - ONLY on desktop */
+  .project-5 .image-section .CrossfadeGallery.crossfade-container {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+  .project-5 .CrossfadeGallery .crossfade-image {
+    height: 100% !important;
+    object-fit: contain !important; /* no cropping */
+    max-width: 100% !important;
+    max-height: 100% !important;
+  }
+}
+
+/* Crossfade state classes must win over resets */
+.CrossfadeGallery .crossfade-image.visible { opacity: 1 !important; }
+.CrossfadeGallery .crossfade-image.fade-in { opacity: 1 !important; }
+.CrossfadeGallery .crossfade-image.fade-out { opacity: 0 !important; }
+.CrossfadeGallery .crossfade-image.hidden { opacity: 0 !important; }
+
+/* Mobile video layout: match first pastoral video margins across all live pages */
+@media (max-width: 768px) {
+  /* Shared mobile video container for projects 1, 3, 5 */
+  .project-1 .video-section,
+  .project-3 .video-section,
+  .project-5 .video-section,
+  .performance-video {
+    position: relative !important;
+    z-index: 1 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 20px !important; /* Equal side margins */
+    box-sizing: border-box !important;
+    background: transparent !important; /* No black boxes on mobile */
+    height: auto !important;
+    min-height: auto !important;
+    margin: 16px 0 !important; /* Consistent vertical rhythm */
+  }
+
+  .project-1 .project-video,
+  .project-3 .project-video,
+  .project-5 .project-video,
+  .performance-video iframe {
+    position: relative !important;
+    z-index: 1 !important;
+    -webkit-transform: translateZ(0) !important;
+    transform: translateZ(0) !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+}
+
+/* Ensure performance containers are never black, even in desktop live pages */
+.project-5 .performance-video,
+.project-5 .performance-gallery {
+  background: transparent !important; /* Override any inherited black backgrounds */
+}
+
+/* Also ensure the element.data container is transparent */
+.project-5 .element.data {
+  background: transparent !important;
+}
+
+/* Ensure MediaSlider container is also transparent */
+.project-5 .performance-gallery .MediaSlider,
+.project-5 .performance-gallery .media-slider {
+  background: transparent !important;
+}
+
+/* Ensure all slideshow containers are transparent */
+.project-5 .performance-gallery * {
+  background: transparent !important;
+}
+
+/* Override any inherited black backgrounds from parent containers */
+.project-5 .element.data,
+.project-5 .element.data *,
+.project-5 .performance-video,
+.project-5 .performance-video *,
+.project-5 .performance-gallery,
+.project-5 .performance-gallery * {
+  background: transparent !important;
+}
+
+/* Ensure project container itself is transparent */
+.project-5.project-container {
+  background: #000 !important;
+}
+
+/* Fix LICITIR video centering on mobile */
+@media (max-width: 768px) {
+  .project-3 .video-section {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 20px !important; /* Same margins as other live pages */
+    box-sizing: border-box !important;
+    background: transparent !important;
+    height: auto !important;
+    min-height: auto !important;
+    margin: 16px 0 !important;
+  }
+  
+  .project-3 .project-video {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+}
+
+/* Force transparent background for first slideshow - highest specificity */
+.project-5 .element.data .performance-gallery,
+.project-5 .element.data .performance-gallery *,
+.project-5 .element.data .performance-video,
+.project-5 .element.data .performance-video * {
+  background: transparent !important;
+}
+
+/* Also target the MediaSlider component specifically */
+.project-5 .performance-gallery .MediaSlider,
+.project-5 .performance-gallery .media-slider,
+.project-5 .performance-gallery .slider-container,
+.project-5 .performance-gallery .slider-btn {
+  background: transparent !important;
+}
+
+/* === Final overrides (highest precedence) === */
+/* 1) Force transparent backgrounds for first slideshow (.performance-gallery) and its descendants */
+.project-5 .element.data .performance-gallery,
+.project-5 .element.data .performance-gallery *,
+.project-5 .element.data .performance-video,
+.project-5 .element.data .performance-video * {
+  background: transparent !important;
+}
+
+/* 2) Ensure the slider internals never paint a background */
+.project-5 .element.data .performance-gallery .media-slider,
+.project-5 .element.data .performance-gallery .slide,
+.project-5 .element.data .performance-gallery .slider-btn {
+  background: transparent !important;
+}
+
+/* 3) LICITIR video centering on mobile (ultimate override) */
+@media (max-width: 768px) {
+  .project-3 .video-section {
+    background: transparent !important;
+    padding: 0 20px !important;
+    margin: 16px 0 !important;
+    height: auto !important;
+    min-height: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .project-3 .project-video,
+  .project-3 iframe.project-video {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+    top: auto !important;
+    left: auto !important;
+  }
+}
+
+/* =========================================================
+   FINAL NAV OVERRIDES (must be last in file)
+   Fix mobile side margins + prevent any layout shift on hover.
+   ========================================================= */
+@media (max-width: 768px) {
+  .main-nav {
+    /* Keep top/bottom padding from existing mobile menu, but control side margins */
+    padding: 8px 13px !important; /* base */
+    padding-left: 10px !important; /* -3px left margin */
+    box-sizing: border-box !important;
+  }
+
+  .main-nav .main-nav-right {
+    /* Flex + fixed item widths => positions don't depend on text width */
+    display: flex !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    align-items: center !important;
+    gap: 0 !important;
+    /* Ensure perfectly centered group with symmetric side margins */
+    margin-left: 2px !important;
+    margin-right: 2px !important;
+    width: calc(100% - 4px) !important;
+    box-sizing: border-box !important;
+  }
+
+  .main-nav .main-nav-right > a {
+    text-align: center !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Fixed slots (order is stable: releases, live, bio, contact) */
+  .main-nav .main-nav-right > a:nth-child(1) { width: 75px !important; }
+  .main-nav .main-nav-right > a:nth-child(2) { width: 45px !important; }
+  .main-nav .main-nav-right > a:nth-child(3) { width: 38px !important; }
+  .main-nav .main-nav-right > a:nth-child(4) { width: 70px !important; }
+
+  /* Simulate italic without reflow */
+  .main-nav a:hover {
+    font-style: normal !important;
+  }
+  .main-nav a:hover .scramble {
+    display: inline-block;
+    transform: skewX(-12deg) !important;
+  }
+}
+
+/* =========================================================
+   FINAL BIO MOBILE PADDING (iPhone/Safari-safe)
+   Ensure Bio side margins don't shrink due to vw-based rules.
+   ========================================================= */
+@media (max-width: 768px) {
+  .bio-container {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: max(2rem, calc(2rem + env(safe-area-inset-left))) !important;
+    padding-right: max(2rem, calc(2rem + env(safe-area-inset-right))) !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* =========================================================
+   FINAL DESKTOP NAV OVERRIDES
+   Shift menu 8px left + increase spacing by 20%
+   ========================================================= */
+@media (min-width: 769px) {
+  .main-nav .main-nav-right {
+    /* 44px * 1.2 ~= 52.8px */
+    column-gap: 53px !important;
+    transform: translateX(-8px) !important; /* shift the group 8px left */
+  }
+}
+
+/* =========================================================
+   GLOBAL MOBILE INSET: remove 14px from left/right everywhere
+   Includes fixed menu + all routed pages (text/images/grids).
+   ========================================================= */
+@media (max-width: 768px) {
+  .page-content {
+    margin-left: -14px !important;
+    margin-right: -14px !important;
+    width: calc(100% + 28px) !important;
+    box-sizing: border-box !important;
+  }
+
+  .main-nav {
+    left: -14px !important;
+    width: calc(100% + 28px) !important;
+  }
+}
+
+/* Landing (mobile): absolutely no scroll + remove any overflow indicators */
+@media (max-width: 768px) {
+  html.page-landing,
+  body.page-landing {
+    height: 100% !important;
+    overflow: hidden !important;
+    overscroll-behavior: none;
+  }
+
+  /* Override the global inset on Landing so nothing extends beyond viewport */
+  .page-content.is-landing {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  /* Ensure landing hero fits exactly and doesn't overflow horizontally */
+  .page-content.is-landing .landing-hero {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+  }
+}
+
+/* =========================================================
+   TYPE SCALE TWEAKS
+   Reduce: live detail titles + Bio titles + Bio body text.
+   ========================================================= */
+@media (max-width: 768px) {
+  .project-container .project-title {
+    font-size: 1.05em !important;
+  }
+  .bio-container .element.data h2 {
+    font-size: 1.05em !important;
+  }
+
+  .bio-container .element.data p {
+    font-size: 0.78em !important;
+    line-height: 1.55 !important;
+  }
+}
+
+/* Faster "italic" animation (we simulate italic via skew to avoid reflow) */
+.main-nav a {
+  transition: color 120ms ease-out !important;
+}
+
+.main-nav a .scramble {
+  display: inline-block;
+  transform: none;
+  transition: transform 120ms ease-out;
+  will-change: transform;
+}
+
+.main-nav a:hover {
+  font-style: normal !important;
+}
+
+.main-nav a:hover .scramble {
+  transform: skewX(-12deg) !important;
+}
