@@ -1,1 +1,1 @@
-# React App - Optimized Performance
+# Sympaathy V2 Frontend
