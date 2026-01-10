@@ -5,7 +5,7 @@ import { MediaSlider } from './components/MediaSlider.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
 
   const CMS_API = import.meta.env.VITE_CMS_API || 'http://localhost:3000'
-  const CMS_SITE_ID = import.meta.env.VITE_CMS_SITE_ID ? String(import.meta.env.VITE_CMS_SITE_ID) : ''
+  const CMS_SITE_ID = import.meta.env.VITE_CMS_SITE_ID ? String(import.meta.env.VITE_CMS_SITE_ID).trim() : ''
 
 const DEBUG_CMS =
   import.meta.env.VITE_DEBUG_CMS != null
@@ -68,7 +68,10 @@ const setCached = (key, data) => {
     const res = await fetch(urlObj.toString(), {
       ...options,
       cache: 'no-store', // Forzar no usar caché del navegador
+      credentials: 'include', // Incluir cookies para CORS
+      mode: 'cors', // Asegurar modo CORS
       headers: {
+        'Content-Type': 'application/json',
         ...options.headers,
         'Cache-Control': 'no-cache'
       }
@@ -89,7 +92,12 @@ const slideshowUrls = (block) => {
 
 const buildDataFromCms = async () => {
   // 1) Resolve section IDs by slug
-  const sections = await fetchJson(`${CMS_API}/sections?limit=200`)
+  const sectionsUrl = new URL(`${CMS_API}/sections`)
+  sectionsUrl.searchParams.set('limit', '200')
+  if (CMS_SITE_ID) {
+    sectionsUrl.searchParams.set('siteId', CMS_SITE_ID.trim())
+  }
+  const sections = await fetchJson(sectionsUrl.toString())
   const bySlug = {}
   sections.forEach(s => { if (s?.slug) bySlug[s.slug] = s })
 
@@ -107,7 +115,14 @@ const buildDataFromCms = async () => {
   const contactSection = requireSection('contact')
 
   const fetchPosts = async (sectionId) => {
-    const data = await fetchJson(`${CMS_API}/posts?sectionId=${sectionId}&page=1&limit=1000`)
+    const url = new URL(`${CMS_API}/posts`)
+    url.searchParams.set('sectionId', sectionId)
+    url.searchParams.set('page', '1')
+    url.searchParams.set('limit', '1000')
+    if (CMS_SITE_ID) {
+      url.searchParams.set('siteId', CMS_SITE_ID.trim())
+    }
+    const data = await fetchJson(url.toString())
     return data.posts || []
   }
 
