@@ -12,6 +12,11 @@ const DEBUG_CMS =
     ? String(import.meta.env.VITE_DEBUG_CMS).toLowerCase() === 'true'
     : import.meta.env.DEV
 
+const CMS_NO_CACHE =
+  import.meta.env.VITE_CMS_NO_CACHE != null
+    ? String(import.meta.env.VITE_CMS_NO_CACHE).toLowerCase() === 'true'
+    : false
+
 const debugLog = (...args) => {
   if (!DEBUG_CMS) return
   // eslint-disable-next-line no-console
@@ -60,22 +65,34 @@ const setCached = (key, data) => {
   const fetchJson = async (url, options = {}) => {
   debugLog('fetch', url)
     const urlWithSiteId = withSiteId(url)
-    // Agregar cache busting para evitar caché del navegador
+    const method = String(options.method || 'GET').toUpperCase()
+
+    // Solo hacer cache-busting cuando lo pedimos explícitamente.
     const urlObj = new URL(urlWithSiteId)
-    if (!urlObj.searchParams.has('_t')) {
+    const bypassCache = CMS_NO_CACHE || DEBUG_CMS
+    if (bypassCache && method === 'GET' && !urlObj.searchParams.has('_t')) {
       urlObj.searchParams.set('_t', Date.now().toString())
     }
-    const res = await fetch(urlObj.toString(), {
+
+    // Evitar preflight en GET/HEAD: no mandar Content-Type.
+    const headers = new Headers(options.headers || {})
+    const hasBody = options.body != null && method !== 'GET' && method !== 'HEAD'
+    if (hasBody && !headers.has('Content-Type')) {
+      headers.set('Content-Type', 'application/json')
+    }
+
+    const fetchOptions = {
       ...options,
-      cache: 'no-store', // Forzar no usar caché del navegador
-      credentials: 'include', // Incluir cookies para CORS
-      mode: 'cors', // Asegurar modo CORS
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-        // Cache-Control eliminado: cache: 'no-store' ya controla el caché
-      }
-    })
+      headers,
+      credentials: options.credentials ?? 'omit'
+    }
+    if (bypassCache) {
+      fetchOptions.cache = 'no-store'
+    } else {
+      delete fetchOptions.cache
+    }
+
+    const res = await fetch(urlObj.toString(), fetchOptions)
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
   return await res.json()
 }
