@@ -73,7 +73,7 @@ const setCached = (key, data) => {
       headers: {
         'Content-Type': 'application/json',
         ...options.headers,
-        'Cache-Control': 'no-cache'
+        // Cache-Control eliminado: cache: 'no-store' ya controla el caché
       }
     })
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
