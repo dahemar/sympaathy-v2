@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "generate:bootstrap": "node scripts/generate_bootstrap.mjs",
+    "vercel-build": "node scripts/generate_bootstrap.mjs && vite build",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
