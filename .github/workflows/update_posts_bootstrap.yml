@@ -1,0 +1,51 @@
+name: Update posts_bootstrap.json
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/15 * * * *'
+
+concurrency:
+  group: update-posts-bootstrap
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install
+        run: npm ci
+
+      - name: Generate bootstrap
+        env:
+          CMS_API: ${{ secrets.CMS_API }}
+          CMS_SITE_ID: ${{ secrets.CMS_SITE_ID }}
+        run: |
+          node scripts/generate_bootstrap.mjs
+
+      - name: Commit and push if changed
+        run: |
+          if git diff --quiet -- public/posts_bootstrap.json; then
+            echo "No changes"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add public/posts_bootstrap.json
+          git commit -m "chore: update posts_bootstrap.json [skip ci]"
+          git push

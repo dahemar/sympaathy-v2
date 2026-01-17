@@ -3,6 +3,17 @@
   "outputDirectory": "dist",
   "devCommand": "npm run dev",
   "framework": "vite",
+  "headers": [
+    {
+      "source": "/posts_bootstrap.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, s-maxage=300, stale-while-revalidate=600"
+        }
+      ]
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
