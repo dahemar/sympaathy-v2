@@ -1,0 +1,23 @@
+name: Pre-warm posts_bootstrap.json on deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  prewarm:
+    runs-on: ubuntu-latest
+    env:
+      PREWARM_URL: ${{ secrets.PREWARM_URL }}
+    steps:
+      - name: Pre-warm CDN (curl posts_bootstrap.json)
+        run: |
+          if [ -z "$PREWARM_URL" ]; then
+            echo "PREWARM_URL secret not set; skipping pre-warm"
+            exit 0
+          fi
+
+          echo "Pre-warming CDN via $PREWARM_URL/posts_bootstrap.json"
+          curl -v --max-time 10 "$PREWARM_URL/posts_bootstrap.json" > /dev/null || echo "pre-warm failed"
