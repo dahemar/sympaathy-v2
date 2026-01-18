@@ -56,7 +56,7 @@ jobs:
           echo "  CMS_API_URL: $CMS_API_URL"
           echo "  CMS_SITE_ID: $CMS_SITE_ID"
           echo "  CMS_SECTION_ID: $CMS_SECTION_ID"
-          node cms-scripts/scripts/prerender_for_actions.js
+          node cms-scripts/scripts/prerender_for_actions.cjs
           
           echo ""
           echo "📄 Generated files:"
