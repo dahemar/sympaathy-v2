@@ -31,7 +31,7 @@ jobs:
           repository: dahemar/cms
           path: cms-scripts
           sparse-checkout: |
-            scripts/prerender_for_actions.js
+            scripts/prerender_for_actions.cjs
           sparse-checkout-cone-mode: false
 
       - name: ⚙️ Setup Node.js
