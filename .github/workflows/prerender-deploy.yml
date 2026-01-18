@@ -1,0 +1,122 @@
+name: Prerender and Deploy Sympaathy
+
+on:
+  push:
+    branches:
+      - main
+  repository_dispatch:
+    types: [cms-content-updated]
+  workflow_dispatch:  # Permite trigger manual para testing
+
+concurrency:
+  group: prerender-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  prerender-and-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout frontend repo
+        uses: actions/checkout@v4
+
+      - name: 📥 Checkout CMS scripts
+        uses: actions/checkout@v4
+        with:
+          repository: dahemar/cms
+          path: cms-scripts
+          sparse-checkout: |
+            scripts/prerender_for_actions.js
+          sparse-checkout-cone-mode: false
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🎨 Run prerender script
+        env:
+          CMS_API_URL: ${{ secrets.CMS_API_URL || 'https://cms-woad-delta.vercel.app' }}
+          CMS_SITE_ID: ${{ secrets.CMS_SITE_ID || '2' }}
+          CMS_SECTION_ID: 'ALL'
+          OUTPUT_DIR: 'public'
+          REPO_TYPE: 'sympaathy'
+          CMS_MEDIA_BASE_URL: ${{ secrets.CMS_MEDIA_BASE_URL || '' }}
+        run: |
+          echo "🎨 Starting prerender for sympaathy-v2..."
+          echo "  CMS_API_URL: $CMS_API_URL"
+          echo "  CMS_SITE_ID: $CMS_SITE_ID"
+          echo "  CMS_SECTION_ID: $CMS_SECTION_ID"
+          node cms-scripts/scripts/prerender_for_actions.js
+          
+          echo ""
+          echo "📄 Generated files:"
+          ls -lh public/posts_bootstrap.json 2>/dev/null || echo "No files generated"
+          
+          echo ""
+          echo "📊 Bootstrap preview:"
+          jq 'keys' public/posts_bootstrap.json 2>/dev/null || true
+
+      - name: 🔍 Verify generated files
+        run: |
+          if [ ! -f "public/posts_bootstrap.json" ]; then
+            echo "❌ posts_bootstrap.json not found!"
+            exit 1
+          fi
+          
+          # Validar JSON y estructura
+          if ! jq empty public/posts_bootstrap.json 2>/dev/null; then
+            echo "❌ posts_bootstrap.json is not valid JSON!"
+            exit 1
+          fi
+          
+          # Verificar que tiene las keys esperadas
+          KEYS=$(jq -r 'keys | @json' public/posts_bootstrap.json)
+          echo "Keys found: $KEYS"
+          
+          if ! echo "$KEYS" | jq -e 'contains(["landingSlides","releases","liveProjects"])' > /dev/null; then
+            echo "⚠️ Warning: Expected keys not found in bootstrap"
+          fi
+          
+          echo "✅ Bootstrap validated"
+
+      - name: 🏗️ Build Vite app
+        run: npm run build
+
+      - name: ⚙️ Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: 🚀 Deploy to Vercel
+        id: vercel_deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          echo "Deploying dist/ to Vercel (using VERCEL_TOKEN)"
+          vercel --prod --token "$VERCEL_TOKEN" --confirm --cwd dist
+
+      - name: ✅ Deployment complete
+        run: |
+          echo "🎉 Vercel deployment triggered"
+          echo "(Check Vercel dashboard for deployment status)"
+          
+      - name: 📋 Summary
+        if: always()
+        run: |
+          echo "## Prerender & Deploy Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Trigger**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **CMS Site**: ${{ secrets.CMS_SITE_ID || '2' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Section**: ALL (complete bootstrap)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.deployment.outcome }}" == "success" ]; then
+            echo "- **Deployed URL**: ${{ steps.deployment.outputs.page_url }}" >> $GITHUB_STEP_SUMMARY
+          fi
