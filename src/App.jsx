@@ -6,16 +6,12 @@ import ScrollToTop from './components/ScrollToTop.jsx'
 
   const CMS_API = import.meta.env.VITE_CMS_API || 'http://localhost:3000'
   const CMS_SITE_ID = import.meta.env.VITE_CMS_SITE_ID ? String(import.meta.env.VITE_CMS_SITE_ID).trim() : ''
+  const SUPABASE_BASE = 'https://xpprwxeptbcqehkfzedh.supabase.co/storage/v1/object/public/prerender'
 
 const DEBUG_CMS =
   import.meta.env.VITE_DEBUG_CMS != null
     ? String(import.meta.env.VITE_DEBUG_CMS).toLowerCase() === 'true'
     : import.meta.env.DEV
-
-const CMS_NO_CACHE =
-  import.meta.env.VITE_CMS_NO_CACHE != null
-    ? String(import.meta.env.VITE_CMS_NO_CACHE).toLowerCase() === 'true'
-    : false
 
 const debugLog = (...args) => {
   if (!DEBUG_CMS) return
@@ -65,34 +61,22 @@ const setCached = (key, data) => {
   const fetchJson = async (url, options = {}) => {
   debugLog('fetch', url)
     const urlWithSiteId = withSiteId(url)
-    const method = String(options.method || 'GET').toUpperCase()
-
-    // Solo hacer cache-busting cuando lo pedimos explícitamente.
+    // Agregar cache busting para evitar caché del navegador
     const urlObj = new URL(urlWithSiteId)
-    const bypassCache = CMS_NO_CACHE || DEBUG_CMS
-    if (bypassCache && method === 'GET' && !urlObj.searchParams.has('_t')) {
+    if (!urlObj.searchParams.has('_t')) {
       urlObj.searchParams.set('_t', Date.now().toString())
     }
-
-    // Evitar preflight en GET/HEAD: no mandar Content-Type.
-    const headers = new Headers(options.headers || {})
-    const hasBody = options.body != null && method !== 'GET' && method !== 'HEAD'
-    if (hasBody && !headers.has('Content-Type')) {
-      headers.set('Content-Type', 'application/json')
-    }
-
-    const fetchOptions = {
+    const res = await fetch(urlObj.toString(), {
       ...options,
-      headers,
-      credentials: options.credentials ?? 'omit'
-    }
-    if (bypassCache) {
-      fetchOptions.cache = 'no-store'
-    } else {
-      delete fetchOptions.cache
-    }
-
-    const res = await fetch(urlObj.toString(), fetchOptions)
+      cache: 'no-store', // Forzar no usar caché del navegador
+      credentials: 'include', // Incluir cookies para CORS
+      mode: 'cors', // Asegurar modo CORS
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+        // Cache-Control eliminado: cache: 'no-store' ya controla el caché
+      }
+    })
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
   return await res.json()
 }
@@ -689,6 +673,57 @@ export default function App() {
   useEffect(() => {
     const load = async () => {
       debugLog('load start')
+
+      // 0) Try loading from Supabase Storage (source of truth)
+      if (CMS_SITE_ID) {
+        try {
+          const manifestUrl = `${SUPABASE_BASE}/${CMS_SITE_ID}/manifest.json?_=${Date.now()}`
+          const manifest = await fetch(manifestUrl, { cache: 'no-store' }).then(r => r.json())
+          
+          const bootstrapFilename = manifest.filesMap?.['posts_bootstrap.json'] || manifest.files?.['posts_bootstrap.json']
+          if (bootstrapFilename) {
+            const bootstrapUrl = `${SUPABASE_BASE}/${CMS_SITE_ID}/${bootstrapFilename}`
+            const data = await fetch(bootstrapUrl, { cache: 'no-store' }).then(r => r.json())
+            
+            if (data && typeof data === 'object') {
+              debugLog('Loaded bootstrap from Supabase Storage:', manifest.version)
+              setLandingSlides(data.landingSlides || [])
+              setReleases(data.releases || [])
+              setLiveProjects(data.liveProjects || [])
+              setLiveDetailMap(data.liveDetailMap || {})
+              setBioSections(data.bioSections || [])
+              setContactLinks(data.contactLinks || [])
+              setCached(BOOTSTRAP_CACHE_KEY, data)
+              setDataLoaded(true)
+              return // Exit load function after successful Supabase load
+            }
+          }
+        } catch (e) {
+          debugLog('Supabase Storage load failed, falling back:', e?.message)
+        }
+      }
+
+      // 1) Fallback: try static JSON bootstrap (legacy)
+      try {
+        const resp = await fetch('/posts_bootstrap.json', { cache: 'no-store' })
+        if (resp.ok) {
+          const data = await resp.json()
+          if (data && typeof data === 'object') {
+            debugLog('Loaded bootstrap JSON from /posts_bootstrap.json (fallback)')
+            setLandingSlides(data.landingSlides || [])
+            setReleases(data.releases || [])
+            setLiveProjects(data.liveProjects || [])
+            setLiveDetailMap(data.liveDetailMap || {})
+            setBioSections(data.bioSections || [])
+            setContactLinks(data.contactLinks || [])
+            setCached(BOOTSTRAP_CACHE_KEY, data)
+            setDataLoaded(true)
+            return
+          }
+        }
+      } catch (e) {
+        debugLog('No bootstrap JSON available', e?.message)
+      }
 
       // 1) Instant render from cache (only if fresh, < 1 minute old)
       const cached = getCachedFresh(BOOTSTRAP_CACHE_KEY)
