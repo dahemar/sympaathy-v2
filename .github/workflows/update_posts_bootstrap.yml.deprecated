@@ -2,6 +2,8 @@ name: Update posts_bootstrap.json
 
 on:
   workflow_dispatch:
+  repository_dispatch:
+    types: [cms-content-updated]
   schedule:
     - cron: '*/15 * * * *'
 
