@@ -175,6 +175,8 @@ export const MediaSlider = memo(({ dataUrl, basePath = '', images, intervalMs = 
                   objectFit: 'contain',
                   willChange: 'opacity, transform'
                 }}
+                width="1200"
+                height="900"
               />
             </picture>
           </div>
@@ -189,6 +191,8 @@ export const MediaSlider = memo(({ dataUrl, basePath = '', images, intervalMs = 
               src={currentImageSources.original} 
               alt={alt || 'slider image'} 
               loading={index === 0 ? firstLoading : 'lazy'} 
+              width="1200"
+              height="900"
               onError={(e) => {
                 // eslint-disable-next-line no-console
                 console.warn('[MediaSlider] image failed', e?.currentTarget?.src)

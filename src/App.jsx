@@ -410,6 +410,8 @@ const Releases = memo(({ releases }) => {
               <img 
                 src={image} 
                 alt={title} 
+                width="800"
+                height="800"
                 loading={index < 4 ? "eager" : "lazy"}
                 decoding={index < 2 ? "sync" : "async"}
                 fetchpriority={index < 2 ? "high" : "auto"}
@@ -455,6 +457,8 @@ const Live = memo(({ liveProjects }) => {
             <img
               src={image}
               alt={title}
+              width="800"
+              height="800"
               loading={index < 3 ? "eager" : "lazy"}
               decoding={index === 0 ? "sync" : "async"}
               fetchpriority={index === 0 ? "high" : "auto"}
