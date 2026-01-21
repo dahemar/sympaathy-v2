@@ -339,8 +339,18 @@ body {
     text-align: center;
     padding: 1.5rem;
     color: #b1b5c1;
-    background: rgba(255,255,255,0.01);
+  background: rgba(255,255,255,0.01);
+  /* Hidden by default to avoid brief placeholder flash before JS hydrates */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s linear;
     border-radius: 8px;
+}
+
+/* Show placeholders only after client hydration */
+.hydrated .slider-placeholder {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .slider-placeholder strong {

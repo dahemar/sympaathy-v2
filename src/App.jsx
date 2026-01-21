@@ -410,8 +410,6 @@ const Releases = memo(({ releases }) => {
               <img 
                 src={image} 
                 alt={title} 
-                width="800"
-                height="800"
                 loading={index < 4 ? "eager" : "lazy"}
                 decoding={index < 2 ? "sync" : "async"}
                 fetchpriority={index < 2 ? "high" : "auto"}
@@ -457,8 +455,6 @@ const Live = memo(({ liveProjects }) => {
             <img
               src={image}
               alt={title}
-              width="800"
-              height="800"
               loading={index < 3 ? "eager" : "lazy"}
               decoding={index === 0 ? "sync" : "async"}
               fetchpriority={index === 0 ? "high" : "auto"}
@@ -664,6 +660,16 @@ const Project = memo(({ liveDetailMap, dataLoaded }) => {
 Project.displayName = 'Project'
 
 export default function App() {
+  useEffect(() => {
+    try {
+      document.documentElement.classList.add('hydrated')
+    } catch (e) {}
+    return () => {
+      try {
+        document.documentElement.classList.remove('hydrated')
+      } catch (e) {}
+    }
+  }, [])
   const [releases, setReleases] = useState([])
   const [liveProjects, setLiveProjects] = useState([])
   const [liveDetailMap, setLiveDetailMap] = useState({})
