@@ -42,7 +42,16 @@
     <style>
       .slider-placeholder{opacity:0!important;pointer-events:none!important}
       .hydrated .slider-placeholder{opacity:1!important;pointer-events:auto!important;transition:opacity .12s linear}
+      /* If the current URL is the landing page, never show the placeholder */
+      .page-landing .slider-placeholder{display:none!important;visibility:hidden!important}
     </style>
+    <script>
+      try {
+        if (typeof location !== 'undefined' && location.pathname === '/') {
+          document.documentElement.classList.add('page-landing')
+        }
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root" data-prerender-target="sessions"></div>
