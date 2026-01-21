@@ -704,8 +704,18 @@ export default function App() {
           if (bootstrapFilename) {
             const bootstrapUrl = `${SUPABASE_BASE}/${CMS_SITE_ID}/${bootstrapFilename}`
             const data = await fetch(bootstrapUrl, { cache: 'no-store' }).then(r => r.json())
-            
-            if (data && typeof data === 'object') {
+
+            const isMeaningfulBootstrap = (d) => {
+              if (!d || typeof d !== 'object') return false
+              const hasLanding = Array.isArray(d.landingSlides) && d.landingSlides.length > 0
+              const hasReleases = Array.isArray(d.releases) && d.releases.length > 0
+              const hasLive = Array.isArray(d.liveProjects) && d.liveProjects.length > 0
+              const hasBio = Array.isArray(d.bioSections) && d.bioSections.length > 0
+              const hasContact = Array.isArray(d.contactLinks) && d.contactLinks.length > 0
+              return hasLanding || hasReleases || hasLive || hasBio || hasContact
+            }
+
+            if (data && typeof data === 'object' && isMeaningfulBootstrap(data)) {
               debugLog(`Loaded bootstrap from Supabase Storage (${isMin ? 'min' : 'full'}):`, manifest.version)
               setLandingSlides(data.landingSlides || [])
               setReleases(data.releases || [])
@@ -715,7 +725,7 @@ export default function App() {
               setContactLinks(data.contactLinks || [])
               setCached(BOOTSTRAP_CACHE_KEY, data)
               setDataLoaded(true)
-              
+
               // If we loaded min, fetch full in background for complete data
               if (isMin) {
                 const fullFilename = manifest.filesMap?.['posts_bootstrap.json'] || manifest.files?.['posts_bootstrap.json']
@@ -737,7 +747,7 @@ export default function App() {
                   }, 100)
                 }
               }
-              
+
               return // Exit load function after successful Supabase load
             }
           }
