@@ -135,11 +135,12 @@ const main = async () => {
   ensureDir(path.dirname(outPath))
 
   const bootstrap = await buildBootstrap()
-  const content = JSON.stringify(bootstrap)
-
+  
+  // Generate full bootstrap
+  const fullContent = JSON.stringify(bootstrap)
   let valid = false
   try {
-    const parsed = JSON.parse(content)
+    const parsed = JSON.parse(fullContent)
     valid = Array.isArray(parsed.landingSlides) && Array.isArray(parsed.releases)
   } catch {
     valid = false
@@ -149,11 +150,35 @@ const main = async () => {
     throw new Error('bootstrap JSON validation failed')
   }
 
-  fs.writeFileSync(tmpPath, content, 'utf8')
-  fs.renameSync(tmpPath, outPath)
-
-  // eslint-disable-next-line no-console
-  console.log(`✅ wrote ${outPath} (${content.length} bytes) from ${CMS_API} siteId=${SITE_ID}`)
+  const fullPath = outPath
+  const fullTmpPath = fullPath + '.tmp'
+  fs.writeFileSync(fullTmpPath, fullContent, 'utf8')
+  fs.renameSync(fullTmpPath, fullPath)
+  console.log(`✅ wrote ${fullPath} (${fullContent.length} bytes) from ${CMS_API} siteId=${SITE_ID}`)
+  
+  // Generate min bootstrap (top-3 liveProjects for above-the-fold)
+  const topN = 3
+  const topLiveProjects = (bootstrap.liveProjects || []).slice(0, topN)
+  const minBootstrap = {
+    landingSlides: bootstrap.landingSlides || [],
+    releases: bootstrap.releases || [],
+    liveProjects: topLiveProjects,
+    liveDetailMap: topLiveProjects.reduce((acc, p) => {
+      if (bootstrap.liveDetailMap?.[p.slug]) {
+        acc[p.slug] = bootstrap.liveDetailMap[p.slug]
+      }
+      return acc
+    }, {}),
+    bioSections: bootstrap.bioSections || [],
+    contactLinks: bootstrap.contactLinks || []
+  }
+  
+  const minContent = JSON.stringify(minBootstrap)
+  const minPath = path.join(rootDir, 'public', 'posts_bootstrap.min.json')
+  const minTmpPath = minPath + '.tmp'
+  fs.writeFileSync(minTmpPath, minContent, 'utf8')
+  fs.renameSync(minTmpPath, minPath)
+  console.log(`✅ wrote ${minPath} (${minContent.length} bytes, top-${topN} liveProjects)`)
 }
 
 main().catch((err) => {

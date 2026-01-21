@@ -3,7 +3,7 @@ import { memo, useEffect, useMemo, useState, useCallback } from 'react'
 // MediaSlider can consume either:
 // 1) dataUrl + basePath (legacy: dataUrl returns ["file1.jpg", ...])
 // 2) images: an array of absolute or root-relative URLs (new: Google Sheets)
-export const MediaSlider = memo(({ dataUrl, basePath = '', images, intervalMs = 6000, alt = '', showNavigation = true }) => {
+export const MediaSlider = memo(({ dataUrl, basePath = '', images, intervalMs = 6000, alt = '', showNavigation = true, firstLoading = 'lazy' }) => {
   const [files, setFiles] = useState([])
   const [index, setIndex] = useState(0)
   const [lastManualNavigation, setLastManualNavigation] = useState(0)
@@ -164,7 +164,7 @@ export const MediaSlider = memo(({ dataUrl, basePath = '', images, intervalMs = 
                 alt={alt || 'slider image'} 
                 loading="eager"
                 decoding="async"
-                fetchpriority={index === 0 ? 'high' : 'auto'}
+                fetchPriority={index === 0 ? 'high' : 'auto'}
                 onError={(e) => {
                   // eslint-disable-next-line no-console
                   console.warn('[MediaSlider] image failed', e?.currentTarget?.src)
@@ -188,7 +188,7 @@ export const MediaSlider = memo(({ dataUrl, basePath = '', images, intervalMs = 
             <img 
               src={currentImageSources.original} 
               alt={alt || 'slider image'} 
-              loading="lazy" 
+              loading={index === 0 ? firstLoading : 'lazy'} 
               onError={(e) => {
                 // eslint-disable-next-line no-console
                 console.warn('[MediaSlider] image failed', e?.currentTarget?.src)

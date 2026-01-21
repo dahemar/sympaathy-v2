@@ -398,6 +398,58 @@ body {
 
 /* Live captions mimic releases while keeping natural rectangles */
 .live-grid {
+
+/* Two-image session styles (copied from cineclub adjustments) */
+.imagem-sessao {
+  flex-wrap: nowrap;
+  overflow: visible;
+  position: relative; /* allow absolute positioning of second image */
+}
+
+.imagem-sessao--two {
+  gap: 10px;
+  align-items: flex-start;
+  display: flex;
+  position: relative;
+  flex-wrap: nowrap;
+}
+
+.imagem-sessao--two .movie-img:first-child {
+  flex: 0 0 auto;
+  height: auto;
+  display: block;
+  max-width: 100%;
+  width: auto;
+}
+
+.imagem-sessao--two .movie-img:last-child {
+  flex: 0 0 auto;
+  height: auto;
+  max-width: 100%;
+  width: auto;
+  object-fit: cover;
+  display: block;
+}
+
+.imagem-sessao--two-hmatch {
+  position: relative;
+  overflow: visible;
+}
+.imagem-sessao--two-hmatch .movie-img:first-child {
+  display: block;
+}
+.imagem-sessao--two-hmatch .movie-img:last-child {
+  position: absolute;
+  top: 0;
+  left: calc(100% + 10px);
+  height: var(--hmatch);
+  width: auto;
+  object-fit: cover;
+}
+
+.imagem-sessao .movie-img {
+  position: relative;
+}
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 32px;
@@ -3428,9 +3480,30 @@ a {
     padding-left: 17px;
 }
 
-/* Live detail: bring slideshow 1 closer to the title */
+/* Live detail: performance gallery fills from top (desktop) */
 .project-live-detail .performance-gallery {
   margin-top: 0rem;
+  position: relative;
+}
+
+/* Desktop: title inside the slideshow at top-left */
+@media (min-width: 769px) {
+  .project-live-detail .performance-gallery .project-title {
+    position: absolute;
+    top: 17px;
+    left: 17px;
+    z-index: 10002 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+/* Mobile: title stays above slideshow */
+@media (max-width: 768px) {
+  .project-live-detail .performance-gallery .project-title {
+    position: static;
+    margin-bottom: 0.5rem !important;
+  }
 }
 
 .media-container {
@@ -3757,18 +3830,21 @@ a {
     }
 }
 
-.project-1 .project-title,
-.project-3 .project-title,
-.project-5 .project-title,
-.project-diamantista-live .project-title,
-.project-licitir-live .project-title,
-.project-pastoral-live .project-title {
+/* Mobile fallback: title positioning for live projects */
+@media (max-width: 768px) {
+  .project-1 .project-title,
+  .project-3 .project-title,
+  .project-5 .project-title,
+  .project-diamantista-live .project-title,
+  .project-licitir-live .project-title,
+  .project-pastoral-live .project-title {
     text-align: left !important;
     align-self: flex-start !important;
-    padding-left: 17px !important; /* 7px base + 10px extra */
+    padding-left: 17px !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
     margin-bottom: 0.5rem !important;
+  }
 }
 
 .video-section iframe.project-video {
@@ -4281,6 +4357,17 @@ body::before {
 
 .project-live-detail .slide {
   aspect-ratio: 16 / 9;
+}
+
+/* Make the first slideshow (performance-gallery) size to its content
+   so it doesn't leave a black band above on live detail pages */
+.project-live-detail .performance-gallery,
+.project-live-detail .performance-gallery .media-slider,
+.project-live-detail .performance-gallery .slide,
+.project-live-detail .performance-gallery picture {
+  height: auto !important;
+  min-height: 0 !important;
+  background: transparent !important;
 }
 
 /* Mobile Live detail: show slideshow1, slideshow2, video in vertical stack */

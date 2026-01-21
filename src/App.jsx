@@ -4,9 +4,10 @@ import { ScrambleText } from './components/ScrambleText.jsx'
 import { MediaSlider } from './components/MediaSlider.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
 
-  const CMS_API = import.meta.env.VITE_CMS_API || 'http://localhost:3000'
-  const CMS_SITE_ID = import.meta.env.VITE_CMS_SITE_ID ? String(import.meta.env.VITE_CMS_SITE_ID).trim() : ''
-  const SUPABASE_BASE = 'https://xpprwxeptbcqehkfzedh.supabase.co/storage/v1/object/public/prerender'
+  // Use inline config from window (set in index.html) or fallback to env
+  const CMS_API = window.CMS_CONFIG?.API_URL || import.meta.env.VITE_CMS_API || 'http://localhost:3000'
+  const CMS_SITE_ID = window.CMS_CONFIG?.SITE_ID || (import.meta.env.VITE_CMS_SITE_ID ? String(import.meta.env.VITE_CMS_SITE_ID).trim() : '')
+  const SUPABASE_BASE = window.CMS_CONFIG?.SUPABASE_BASE || 'https://xpprwxeptbcqehkfzedh.supabase.co/storage/v1/object/public/prerender'
 
 const DEBUG_CMS =
   import.meta.env.VITE_DEBUG_CMS != null
@@ -19,12 +20,12 @@ const debugLog = (...args) => {
   console.log('[cms]', ...args)
 }
 
-const CACHE_TTL = 1 * 60 * 1000 // 1 minute (reduced for faster updates)
+const CACHE_TTL = 5 * 60 * 1000 // 5 minutes (localStorage persistent cache)
 const BOOTSTRAP_CACHE_KEY = `cms_bootstrap_v2_${CMS_SITE_ID || 'auto'}`
 
 const getCachedEntry = (key) => {
   try {
-    const cached = sessionStorage.getItem(key)
+    const cached = localStorage.getItem(key)
     if (!cached) return null
     const { data, timestamp } = JSON.parse(cached)
     if (typeof timestamp !== 'number') return null
@@ -45,7 +46,7 @@ const getCachedAny = (key) => getCachedEntry(key)?.data ?? null
 
 const setCached = (key, data) => {
   try {
-    sessionStorage.setItem(key, JSON.stringify({ data, timestamp: Date.now() }))
+    localStorage.setItem(key, JSON.stringify({ data, timestamp: Date.now() }))
   } catch {
     // ignore quota errors
   }
@@ -410,6 +411,7 @@ const Releases = memo(({ releases }) => {
                 src={image} 
                 alt={title} 
                 loading={index < 4 ? "eager" : "lazy"}
+                decoding={index < 2 ? "sync" : "async"}
                 fetchpriority={index < 2 ? "high" : "auto"}
                 onLoad={() => markLoaded(href)}
                 onError={() => markLoaded(href)}
@@ -443,7 +445,7 @@ const Live = memo(({ liveProjects }) => {
 
   return (
     <div className="projects-grid live-grid">
-        {liveProjects.map(({ slug, title, image }) => (
+        {liveProjects.map(({ slug, title, image }, index) => (
         <Link
           key={slug}
           to={`/${slug}`}
@@ -453,7 +455,9 @@ const Live = memo(({ liveProjects }) => {
             <img
               src={image}
               alt={title}
-              loading="lazy"
+              loading={index < 3 ? "eager" : "lazy"}
+              decoding={index === 0 ? "sync" : "async"}
+              fetchpriority={index === 0 ? "high" : "auto"}
               onLoad={() => markLoaded(slug)}
               onError={() => markLoaded(slug)}
             />
@@ -560,8 +564,6 @@ const LiveDetail = memo(({ primaryImages, secondaryImages, video }) => {
   }
 
   const renderVideoSection = () => {
-    // eslint-disable-next-line no-console
-    console.log('[LiveDetail] video', video)
     if (!video) {
       return (
         <div className="slider-placeholder">
@@ -593,10 +595,6 @@ const LiveDetail = memo(({ primaryImages, secondaryImages, video }) => {
           controls
           preload="metadata"
           playsInline
-          onError={(e) => {
-            // eslint-disable-next-line no-console
-            console.warn('[LiveDetail] video failed', e?.currentTarget?.src, e?.currentTarget?.error)
-          }}
         />
       )
     }
@@ -674,19 +672,41 @@ export default function App() {
     const load = async () => {
       debugLog('load start')
 
-      // 0) Try loading from Supabase Storage (source of truth)
+      // 1) Instant render from cache (only if fresh, < 5 minutes old)
+      const cached = getCachedFresh(BOOTSTRAP_CACHE_KEY)
+      if (cached) {
+        debugLog('cache bootstrap (fresh)')
+        setLandingSlides(cached.landingSlides || [])
+        setReleases(cached.releases || [])
+        setLiveProjects(cached.liveProjects || [])
+        setLiveDetailMap(cached.liveDetailMap || {})
+        setBioSections(cached.bioSections || [])
+        setContactLinks(cached.contactLinks || [])
+        setDataLoaded(true)
+        return // Fresh cache found, no need to fetch
+      }
+
+      // 2) Try loading from Supabase Storage (source of truth)
       if (CMS_SITE_ID) {
         try {
           const manifestUrl = `${SUPABASE_BASE}/${CMS_SITE_ID}/manifest.json?_=${Date.now()}`
           const manifest = await fetch(manifestUrl, { cache: 'no-store' }).then(r => r.json())
           
-          const bootstrapFilename = manifest.filesMap?.['posts_bootstrap.json'] || manifest.files?.['posts_bootstrap.json']
+          // Try min artifact first (top-N posts for above-the-fold)
+          let bootstrapFilename = manifest.filesMap?.['posts_bootstrap.min.json'] || manifest.files?.['posts_bootstrap.min.json']
+          let isMin = !!bootstrapFilename
+          
+          // Fallback to full if min doesn't exist
+          if (!bootstrapFilename) {
+            bootstrapFilename = manifest.filesMap?.['posts_bootstrap.json'] || manifest.files?.['posts_bootstrap.json']
+          }
+          
           if (bootstrapFilename) {
             const bootstrapUrl = `${SUPABASE_BASE}/${CMS_SITE_ID}/${bootstrapFilename}`
             const data = await fetch(bootstrapUrl, { cache: 'no-store' }).then(r => r.json())
             
             if (data && typeof data === 'object') {
-              debugLog('Loaded bootstrap from Supabase Storage:', manifest.version)
+              debugLog(`Loaded bootstrap from Supabase Storage (${isMin ? 'min' : 'full'}):`, manifest.version)
               setLandingSlides(data.landingSlides || [])
               setReleases(data.releases || [])
               setLiveProjects(data.liveProjects || [])
@@ -695,6 +715,29 @@ export default function App() {
               setContactLinks(data.contactLinks || [])
               setCached(BOOTSTRAP_CACHE_KEY, data)
               setDataLoaded(true)
+              
+              // If we loaded min, fetch full in background for complete data
+              if (isMin) {
+                const fullFilename = manifest.filesMap?.['posts_bootstrap.json'] || manifest.files?.['posts_bootstrap.json']
+                if (fullFilename && fullFilename !== bootstrapFilename) {
+                  debugLog('Loading full bootstrap in background...')
+                  setTimeout(async () => {
+                    try {
+                      const fullUrl = `${SUPABASE_BASE}/${CMS_SITE_ID}/${fullFilename}`
+                      const fullData = await fetch(fullUrl, { cache: 'no-store' }).then(r => r.json())
+                      if (fullData && typeof fullData === 'object') {
+                        debugLog('Full bootstrap loaded, updating...')
+                        setLiveProjects(fullData.liveProjects || [])
+                        setLiveDetailMap(fullData.liveDetailMap || {})
+                        setCached(BOOTSTRAP_CACHE_KEY, fullData)
+                      }
+                    } catch (e) {
+                      debugLog('Full bootstrap load failed:', e?.message)
+                    }
+                  }, 100)
+                }
+              }
+              
               return // Exit load function after successful Supabase load
             }
           }
@@ -703,7 +746,7 @@ export default function App() {
         }
       }
 
-      // 1) Fallback: try static JSON bootstrap (legacy)
+      // 3) Fallback: try static JSON bootstrap (legacy)
       try {
         const resp = await fetch('/posts_bootstrap.json', { cache: 'no-store' })
         if (resp.ok) {
@@ -725,21 +768,9 @@ export default function App() {
         debugLog('No bootstrap JSON available', e?.message)
       }
 
-      // 1) Instant render from cache (only if fresh, < 1 minute old)
-      const cached = getCachedFresh(BOOTSTRAP_CACHE_KEY)
-      if (cached) {
-        debugLog('cache bootstrap (fresh)')
-        setLandingSlides(cached.landingSlides || [])
-        setReleases(cached.releases || [])
-        setLiveProjects(cached.liveProjects || [])
-        setLiveDetailMap(cached.liveDetailMap || {})
-        setBioSections(cached.bioSections || [])
-        setContactLinks(cached.contactLinks || [])
-        setDataLoaded(true)
-      }
-
-      // 2) Always fetch fresh data (with cache busting)
+      // 4) Last resort: build from CMS API (slowest but always works)
       try {
+        debugLog('Building data from CMS API...')
         const data = await buildDataFromCms()
         setCached(BOOTSTRAP_CACHE_KEY, data)
 
@@ -752,9 +783,8 @@ export default function App() {
         setDataLoaded(true)
         debugLog('load done')
       } catch (err) {
-        // eslint-disable-next-line no-console
-        console.warn('CMS fetch error:', err?.message)
-        if (!cached) setDataLoaded(false)
+        console.error('CMS fetch error:', err?.message)
+        setDataLoaded(false)
       }
     }
 
