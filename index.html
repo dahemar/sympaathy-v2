@@ -25,6 +25,20 @@
     <!-- Load fonts with display=swap for faster text rendering -->
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Averia+Sans+Libre:wght@300;400;700&family=Headland+One&display=swap" rel="stylesheet">
     
+    <!-- Critical CSS inlined for instant above-the-fold render -->
+    <style>
+      *{transition-property:color,opacity,transform,background,width,height,filter,backdrop-filter,box-shadow!important}
+      body{filter:blur(15px);animation:page-load-blur 2.5s cubic-bezier(.4,0,.2,1) forwards}
+      @keyframes page-load-blur{0%{filter:blur(15px);opacity:.9}15%{filter:blur(12px);opacity:.92}30%{filter:blur(8px);opacity:.94}45%{filter:blur(5px);opacity:.96}60%{filter:blur(3px);opacity:.98}75%{filter:blur(1px);opacity:.99}100%{filter:blur(0);opacity:1}}
+      body,.v6_3{background-color:transparent;color:#8a9197;margin:0;padding:0;min-height:100vh;overflow-y:auto;font-family:'Headland One',serif;font-weight:400;text-rendering:optimizeLegibility;line-height:1.4;animation:text-focus 1.2s cubic-bezier(.4,0,.2,1) forwards}
+      html,body{max-width:100%;overflow-x:hidden;background-color:#000!important}
+      html{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;font-weight:400}
+      #root{max-width:1280px;margin:0 auto;padding:2rem;text-align:center}
+      a{position:relative;text-decoration:none;color:#8a9197;border:none;outline:none;z-index:1;padding:.2em .4em;margin:0 -.4em}
+      a::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;background:rgba(251,252,255,.05);border-radius:50%;transform:translate(-50%,-50%);transition:all .5s cubic-bezier(.16,1,.3,1);z-index:-1}
+      @keyframes text-focus{0%{opacity:.7;filter:blur(2px)}100%{opacity:1;filter:blur(0)}}
+    </style>
+    
     <!-- Preload first landing image for instant hero -->
     <link rel="preload" as="image" href="/images/landing/landing-1.jpg" fetchpriority="high" />
     

@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "vite",
     "generate:bootstrap": "node scripts/generate_bootstrap.mjs",
-    "vercel-build": "node scripts/generate_bootstrap.mjs && vite build",
-    "build": "vite build",
+    "precompress": "node scripts/precompress.mjs",
+    "vercel-build": "node scripts/generate_bootstrap.mjs && vite build && node scripts/precompress.mjs",
+    "build": "vite build && node scripts/precompress.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },
